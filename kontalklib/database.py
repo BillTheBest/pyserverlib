@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 '''Interface to messenger database.'''
 
-import time, base64
+import time
 import logging as log
 import MySQLdb
 
@@ -124,7 +124,7 @@ class UsercacheDb(MessengerDb):
         q = 'DELETE FROM usercache WHERE UNIX_TIMESTAMP() > (UNIX_TIMESTAMP(timestamp) + %d)' % (self._config['usercache.expire'])
         return self.execute_update(q)
 
-    def update(self, userid, serverid = None, timestamp = None, broadcast = True):
+    def update(self, userid, serverid = None, timestamp = None):
         args = { 'userid' : userid }
 
         if serverid:
@@ -139,45 +139,8 @@ class UsercacheDb(MessengerDb):
         else:
             ts_str = 'sysdate()'
 
-        # get previous values if we are going to broadcast
-        if broadcast:
-            entry = self.get(userid, True)
-
-        q = 'REPLACE INTO usercache VALUES (%(userid)s, %s, %s)' % (server_str, ts_str)
-        n = self.execute_update(q, args)
-
-        if n > 0 and broadcast:
-            '''
-            -- broadcast notification to network --
-            Notification is sent only if the cache entry has been modified,
-            that is, the timeout has expired or the server field has changed
-            (it wasn't NULL before).
-            '''
-            broadcast = not entry
-
-            if entry:
-                old = {
-                    'userid' : entry['userid'],
-                    'server' : entry['server'],
-                    'timestamp' : time.mktime(time.strptime(entry['timestamp'], '%Y-%m-%d %H:%M:%S'))
-                }
-                new = {
-                    'userid' : userid,
-                    'server' : serverid,
-                    'timestamp' : timestamp
-                }
-
-                if self.entry_changed(old, new):
-                    broadcast = True
-
-            if broadcast:
-                log.debug('TODO broadcast usercache event')
-                # TODO broadcasts should be sent asynchronously
-                # TODO external scripts environment and settings
-                #exec('/usr/bin/env php5 '.SERVERIMPL_PATH.'/broadcaster.php usercache ' . $userid . ' >/tmp/broadcaster.log 2>&1')
-
-        return n
-
+        q = 'REPLACE INTO usercache VALUES (%%(userid)s, %s, %s)' % (server_str, ts_str)
+        return self.execute_update(q, args)
 
     def _entry_changed(self, old, new):
         return (
@@ -245,6 +208,35 @@ class MessagesDb(MessengerDb):
             self.resolve_groups(rs)
         return rs
 
+    def incoming(self, userid, local_lock = False, remote_lock = False, resolve_groups = False):
+        '''Retrieves the list of incoming message for a user.'''
+        extra = ''
+        fields = {
+            # FIXME handle resources
+            'userid' : userid
+        }
+
+        if local_lock == None:
+            extra = ' AND local_lock IS NULL'
+        elif local_lock == True:
+            extra = ' AND local_lock IS NOT NULL'
+        elif local_lock == 1:
+            extra = ' AND unix_timestamp() > (unix_timestamp(local_lock) + ' + self._config['message.lock_validity'] + ')'
+
+        if remote_lock == None:
+            extra = ' AND remote_lock IS NULL'
+        elif remote_lock == True:
+            extra = ' AND remote_lock IS NOT NULL'
+        elif remote_lock == 1:
+            extra = ' AND unix_timestamp() > (unix_timestamp(remote_lock) + ' + self._config['message.lock_validity'] + ')'
+
+        # FIXME handle resources
+        rs = self.get_rows('SELECT * FROM messages WHERE recipient = %(userid)s' + extra, fields)
+        if resolve_groups:
+            self.resolve_groups(rs)
+
+        return rs
+
     def expired(self, resolve_groups = False):
         '''Returns expired messages (TTL <= 0).'''
         q = 'SELECT * FROM messages WHERE ttl <= 0'
@@ -271,7 +263,7 @@ class MessagesDb(MessengerDb):
     def delete(self, msgid):
         return self.execute_update('DELETE FROM messages WHERE id = %s', [ msgid ])
 
-    def insert(self, id, sender, recipient, group, mime, content, filename, ttl, orig_id = None, local_lock = False, remote_lock = False):
+    def insert(self, id, sender, recipient, group, mime, content, encrypted, filename, ttl, orig_id = None, local_lock = False, remote_lock = False):
         if not id:
             id = self.generate_id()
 
@@ -285,6 +277,7 @@ class MessagesDb(MessengerDb):
             group,
             mime,
             content,
+            encrypted,
             filename,
             ttl
         ]
@@ -292,7 +285,7 @@ class MessagesDb(MessengerDb):
         local = 'sysdate()' if local_lock else 'NULL'
         remote = 'sysdate()' if remote_lock else 'NULL'
 
-        if self.execute_update('INSERT INTO messages VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, '+local+', '+remote+')', args):
+        if self.execute_update('INSERT INTO messages VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, '+local+', '+remote+')', args):
             return id
 
         return False
@@ -305,11 +298,12 @@ class MessagesDb(MessengerDb):
             utils.dict_get(msg, 'group'),
             utils.dict_get(msg, 'mime'),
             utils.dict_get(msg, 'content'),
+            utils.dict_get_none(msg, 'encrypted', False),
             utils.dict_get(msg, 'filename'),
             utils.dict_get(msg, 'ttl'),
             utils.dict_get(msg, 'orig_id'),
-            utils.dict_get(msg, 'local_lock', False),
-            utils.dict_get(msg, 'remote_lock', False)
+            utils.dict_get_none(msg, 'local_lock', False),
+            utils.dict_get_none(msg, 'remote_lock', False)
         )
 
     def ttl_dec(self, msgid, count = 1):
@@ -340,7 +334,7 @@ class MessagesDb(MessengerDb):
         return {
             'sender' : sender,
             'recipient' : recipient,
-            'content' : base64.b64encode('<r><i>%s</i><e>%d</e></r>' % (escape(msgid), status)),
+            'content' : '<r><i>%s</i><e>%d</e></r>' % (escape(msgid), status),
             'group' : False,
             'mime' : 'r',
             'ttl' : self._config['ttl.receipt']

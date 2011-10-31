@@ -34,16 +34,7 @@ def user_token(userid, fp):
 
 def verify_user_token(token, serversdb, fp = None):
     '''Verifies a user token against a single fingerprint or the keyring.'''
-    """
-            // il token non e' nostro, verifica nel keyring
-            $keyring = $serversdb->get_keyring();
-            foreach ($keyring as $key) {
-                if (!strcasecmp($chk[0]['fingerprint'], $key))
-                    return $userid;
-            }
-        }
-    }
-    """
+
     # decode base64 first
     data = base64.b64decode(token)
     # setup pyme
@@ -84,7 +75,7 @@ def verify_user_token(token, serversdb, fp = None):
 
 
 def _parse_authorization(params):
-    data = params.split('=', 2)
+    data = params.split('=', 1)
     db = utils.db(cherrypy.request.app.config)
     return {'userid' : verify_user_token(data[1], db.servers(),
         cherrypy.request.app.config['server']['fingerprint'])}
