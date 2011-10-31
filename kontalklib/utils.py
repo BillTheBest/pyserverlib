@@ -48,11 +48,6 @@ def sha1(text):
     hashed = hashlib.sha1(text)
     return hashed.hexdigest()
 
-def xml_http_request(url, headers = {}):
-    req = urllib2.Request(url=url, headers=headers)
-    f = urllib2.urlopen(req)
-    return ElementTree.parse(f)
-
 def generate_node_token(rcpts, fp, text = None):
     if text == None:
         text = fp
