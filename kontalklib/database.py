@@ -10,6 +10,14 @@ import utils
 from xml.sax.saxutils import escape
 
 
+def connect_config(servercfg):
+    config = servercfg['database']
+    return connect(
+        config['host'], config['port'],
+        config['user'], config['password'],
+        config['dbname'], servercfg['server']
+    )
+
 def connect(host, port, user, passwd, dbname, servercfg):
     db = MySQLdb.connect(host=host, port=port, user=user, passwd=passwd, db=dbname)
     return MessengerDb(db, servercfg)
