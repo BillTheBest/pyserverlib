@@ -1,0 +1,20 @@
+// Postoffice protocol definitions
+
+message BoxContainer {
+  optional bytes name = 1;
+  optional bytes value = 2;
+}
+
+message UsercacheLookupRequest {
+    // requested users
+    repeated string user_id = 3;
+}
+
+message UsercacheLookupResponse {
+    // matched users
+    message User {
+        required string user_id = 1;
+        optional uint64 timestamp = 2;
+    }
+    repeated User user = 3;
+}
