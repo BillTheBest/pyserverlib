@@ -11,7 +11,7 @@ from google.protobuf import descriptor_pb2
 DESCRIPTOR = descriptor.FileDescriptor(
   name='postoffice.proto',
   package='',
-  serialized_pb='\n\x10postoffice.proto\"+\n\x0c\x42oxContainer\x12\x0c\n\x04name\x18\x01 \x01(\x0c\x12\r\n\x05value\x18\x02 \x01(\x0c\")\n\x16UsercacheLookupRequest\x12\x0f\n\x07user_id\x18\x03 \x03(\t\"r\n\x17UsercacheLookupResponse\x12+\n\x04user\x18\x03 \x03(\x0b\x32\x1d.UsercacheLookupResponse.User\x1a*\n\x04User\x12\x0f\n\x07user_id\x18\x01 \x02(\t\x12\x11\n\ttimestamp\x18\x02 \x01(\x04')
+  serialized_pb='\n\x10postoffice.proto\"+\n\x0c\x42oxContainer\x12\x0c\n\x04name\x18\x01 \x02(\t\x12\r\n\x05value\x18\x02 \x02(\x0c\")\n\x16UsercacheLookupRequest\x12\x0f\n\x07user_id\x18\x03 \x03(\t\"r\n\x17UsercacheLookupResponse\x12+\n\x04user\x18\x03 \x03(\x0b\x32\x1d.UsercacheLookupResponse.User\x1a*\n\x04User\x12\x0f\n\x07user_id\x18\x01 \x02(\t\x12\x11\n\ttimestamp\x18\x02 \x01(\x04')
 
 
 
@@ -25,14 +25,14 @@ _BOXCONTAINER = descriptor.Descriptor(
   fields=[
     descriptor.FieldDescriptor(
       name='name', full_name='BoxContainer.name', index=0,
-      number=1, type=12, cpp_type=9, label=1,
-      has_default_value=False, default_value="",
+      number=1, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=unicode("", "utf-8"),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     descriptor.FieldDescriptor(
       name='value', full_name='BoxContainer.value', index=1,
-      number=2, type=12, cpp_type=9, label=1,
+      number=2, type=12, cpp_type=9, label=2,
       has_default_value=False, default_value="",
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,

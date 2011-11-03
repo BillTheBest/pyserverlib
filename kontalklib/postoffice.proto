@@ -1,8 +1,8 @@
 // Postoffice protocol definitions
 
 message BoxContainer {
-  optional bytes name = 1;
-  optional bytes value = 2;
+  required string name = 1;
+  required bytes value = 2;
 }
 
 message UsercacheLookupRequest {
