@@ -336,7 +336,7 @@ class MessagesDb(MessengerDb):
 
     def generate_id(self):
         # TODO %z is deprecated
-        return self._config['fingerprint'] + time.strftime('%Y%M%d%H%M%S%z') + utils.rand_str(5, utils.CHARSBOX_AZN_UPPERCASE)
+        return self._config['fingerprint'] + time.strftime('%Y%m%d%H%M%S%z') + utils.rand_str(5, utils.CHARSBOX_AZN_UPPERCASE)
 
     def message_receipt(self, msgid, status, sender = None, recipient = None):
         return {
