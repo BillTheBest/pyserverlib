@@ -1,5 +1,18 @@
 // Postoffice protocol definitions
 
+// TODO this should be in a common proto file
+enum Status {
+    STATUS_SUCCESS = 0;
+    STATUS_ERROR = 1;
+    STATUS_BUSY = 2;
+    STATUS_VERIFICATION_FAILED = 3;
+    STATUS_INVALID_PHONE_NUMBER = 4;
+    STATUS_TTL_EXPIRED = 5;
+    STATUS_USER_NOTFOUND = 6;
+    STATUS_MESSAGE_NOTFOUND = 7;
+}
+
+
 message BoxContainer {
   required string name = 1;
   required bytes value = 2;
@@ -33,6 +46,5 @@ message SendMessageRequest {
 }
 
 message SendMessageResponse {
-    // TODO convert to Status enum
-    required uint32 status = 1;
+    required Status status = 1;
 }
