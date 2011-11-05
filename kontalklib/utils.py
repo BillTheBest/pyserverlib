@@ -10,8 +10,8 @@ CHARSBOX_AZN_CASEINS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234
 CHARSBOX_AZN_LOWERCASE = 'abcdefghijklmnopqrstuvwxyz1234567890'
 CHARSBOX_AZN_UPPERCASE = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'
 
-import random, urllib2, base64, hashlib
-from xml.etree import ElementTree
+import random, base64, hashlib
+import Image, StringIO
 
 import database
 
@@ -103,3 +103,21 @@ def db(config):
         cfg['host'], cfg['port'],
         cfg['user'], cfg['password'],
         cfg['dbname'], config['server'])
+
+def generate_preview_content(filename, mime):
+    """
+    Creates a preview content for the given file and mime type.
+    Supported types: png, jpg, gif
+    """
+    supported_mimes = {
+        'image/png' : 'PNG',
+        'image/jpeg' : 'JPEG',
+        'image/gif' : 'GIF'
+    }
+
+    if mime in supported_mimes:
+        im = Image.open(filename)
+        im.thumbnail((128, 128), Image.ANTIALIAS)
+        buf = StringIO.StringIO()
+        im.save(buf, format=supported_mimes[mime])
+        return buf.getvalue()

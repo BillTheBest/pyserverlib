@@ -46,6 +46,10 @@ class MessengerDb:
         '''Returns a reference to a new ValidationsDb instance.'''
         return ValidationsDb(self._db, self._config)
 
+    def attachments(self):
+        '''Returns a reference to a new AttachmentsDb instance.'''
+        return AttachmentsDb(self._db, self._config)
+
     def execute_update(self, query, args = None):
         c = self._db.cursor()
         n = c.execute(query, args)
@@ -83,6 +87,11 @@ class ServersDb(MessengerDb):
     '''Interface to the servers table.'''
     def __init__(self, db, config):
         MessengerDb.__init__(self, db, config)
+
+    def get_address(self, fingerprint):
+        r = self.get_row('SELECT address FROM servers WHERE fingerprint = %s', (fingerprint, ))
+        if r:
+            return r['address']
 
     def get_map(self, include_me = False):
         data = self.get_list(False, include_me)
@@ -209,8 +218,8 @@ class MessagesDb(MessengerDb):
  ( (local_lock IS NULL) = (remote_lock IS NULL) OR\
  ((remote_lock IS NULL OR UNIX_TIMESTAMP() > (UNIX_TIMESTAMP(remote_lock) + %d))\
  XOR (local_lock IS NULL OR UNIX_TIMESTAMP() > (UNIX_TIMESTAMP(local_lock) + %d)))))' % \
-            (utils.USERID_LENGTH, self._config['message.lock_validity'],
-             self._config['message.lock_validity'], utils.USERID_LENGTH_RESOURCE)
+            (utils.USERID_LENGTH, utils.USERID_LENGTH_RESOURCE,
+             self._config['message.lock_validity'], self._config['message.lock_validity'])
         rs = self.get_rows(q)
         if resolve_groups:
             self.resolve_groups(rs)
@@ -303,7 +312,7 @@ class MessagesDb(MessengerDb):
             utils.dict_get(msg, 'id'),
             utils.dict_get(msg, 'sender'),
             utils.dict_get(msg, 'recipient'),
-            utils.dict_get(msg, 'group'),
+            utils.dict_get_none(msg, 'group', None),
             utils.dict_get(msg, 'mime'),
             utils.dict_get(msg, 'content'),
             utils.dict_get_none(msg, 'encrypted', False),
@@ -331,7 +340,7 @@ class MessagesDb(MessengerDb):
         return self.execute_update('UPDATE messages SET remote_lock = ' + what + ' WHERE id = %s', (msgid, ))
 
     def ttl_dec_for_local_lock(self, msgid):
-        return self.execute_update('UPDATE messages SET remote_lock = NULL AND local_lock = sysdate() AND ttl = ttl - 1 WHERE id = %s',
+        return self.execute_update('UPDATE messages SET remote_lock = NULL, local_lock = sysdate(), ttl = ttl - 1 WHERE id = %s',
             (msgid, ))
 
     def generate_id(self):
@@ -343,7 +352,6 @@ class MessagesDb(MessengerDb):
             'sender' : sender,
             'recipient' : recipient,
             'content' : '<r><i>%s</i><e>%d</e></r>' % (escape(msgid), status),
-            'group' : False,
             'mime' : 'r',
             'ttl' : self._config['ttl.receipt']
         }
@@ -357,12 +365,12 @@ class ValidationsDb(MessengerDb):
 
     def get_code(self, userid):
         '''Retrieves a validation code from a userid.'''
-        r = self.get_row('SELECT code from validations WHERE userid = %s', (userid, ))
+        r = self.get_row('SELECT code FROM validations WHERE userid = %s', (userid, ))
         return r['code'] if r else False
 
     def get_userid(self, code):
         '''Retrieves the userid from a validation code.'''
-        r = self.get_row('SELECT userid from validations WHERE code = %s', (code, ))
+        r = self.get_row('SELECT userid FROM validations WHERE code = %s', (code, ))
         return r['userid'] if r else False
 
     def delete(self, code):
@@ -379,3 +387,29 @@ class ValidationsDb(MessengerDb):
             'REPLACE INTO validations VALUES (%s, %s)', fields),
             code
         )
+
+
+class AttachmentsDb(MessengerDb):
+    '''Interface to the attachments table.'''
+
+    def __init__(self, db, config):
+        MessengerDb.__init__(self, db, config)
+
+    def get(self, filename, userid = False):
+        '''Retrieves an attachment entry, optionally filtering by user id.'''
+        query = 'SELECT * FROM attachments WHERE filename = %s'
+        args = [ filename ]
+        if userid:
+            query += ' AND userid = %s'
+            args.append(userid)
+
+        return self.get_row(query, args)
+
+    def insert(self, userid, filename, mime):
+        '''Inserts a new attachments entry.'''
+        return self.execute_update('INSERT INTO attachments VALUES(%s, %s, %s)',
+            (userid, filename, mime))
+
+    def delete(self, filename):
+        '''Deletes an attachment entry.'''
+        return self.execute_update('DELETE FROM attachments WHERE filename = %s', (filename, ))
