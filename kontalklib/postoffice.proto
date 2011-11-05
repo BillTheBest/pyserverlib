@@ -18,3 +18,21 @@ message UsercacheLookupResponse {
     }
     repeated User user = 3;
 }
+
+message SendMessageRequest {
+    required string id = 1;
+    optional string original_id = 2;
+    required string sender = 3;
+    required string recipient = 4;
+    optional string group = 5;
+    required string mime = 6;
+    required string content = 7;
+    optional bool encrypted = 8;
+    optional string url = 9;
+    required uint32 ttl = 10;
+}
+
+message SendMessageResponse {
+    // TODO convert to Status enum
+    required uint32 status = 1;
+}

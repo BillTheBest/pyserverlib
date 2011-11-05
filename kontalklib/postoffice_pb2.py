@@ -11,7 +11,7 @@ from google.protobuf import descriptor_pb2
 DESCRIPTOR = descriptor.FileDescriptor(
   name='postoffice.proto',
   package='',
-  serialized_pb='\n\x10postoffice.proto\"+\n\x0c\x42oxContainer\x12\x0c\n\x04name\x18\x01 \x02(\t\x12\r\n\x05value\x18\x02 \x02(\x0c\")\n\x16UsercacheLookupRequest\x12\x0f\n\x07user_id\x18\x03 \x03(\t\"r\n\x17UsercacheLookupResponse\x12+\n\x04user\x18\x03 \x03(\x0b\x32\x1d.UsercacheLookupResponse.User\x1a*\n\x04User\x12\x0f\n\x07user_id\x18\x01 \x02(\t\x12\x11\n\ttimestamp\x18\x02 \x01(\x04')
+  serialized_pb='\n\x10postoffice.proto\"+\n\x0c\x42oxContainer\x12\x0c\n\x04name\x18\x01 \x02(\t\x12\r\n\x05value\x18\x02 \x02(\x0c\")\n\x16UsercacheLookupRequest\x12\x0f\n\x07user_id\x18\x03 \x03(\t\"r\n\x17UsercacheLookupResponse\x12+\n\x04user\x18\x03 \x03(\x0b\x32\x1d.UsercacheLookupResponse.User\x1a*\n\x04User\x12\x0f\n\x07user_id\x18\x01 \x02(\t\x12\x11\n\ttimestamp\x18\x02 \x01(\x04\"\xb3\x01\n\x12SendMessageRequest\x12\n\n\x02id\x18\x01 \x02(\t\x12\x13\n\x0boriginal_id\x18\x02 \x01(\t\x12\x0e\n\x06sender\x18\x03 \x02(\t\x12\x11\n\trecipient\x18\x04 \x02(\t\x12\r\n\x05group\x18\x05 \x01(\t\x12\x0c\n\x04mime\x18\x06 \x02(\t\x12\x0f\n\x07\x63ontent\x18\x07 \x02(\t\x12\x11\n\tencrypted\x18\x08 \x01(\x08\x12\x0b\n\x03url\x18\t \x01(\t\x12\x0b\n\x03ttl\x18\n \x02(\r\"%\n\x13SendMessageResponse\x12\x0e\n\x06status\x18\x01 \x02(\r')
 
 
 
@@ -140,11 +140,132 @@ _USERCACHELOOKUPRESPONSE = descriptor.Descriptor(
   serialized_end=222,
 )
 
+
+_SENDMESSAGEREQUEST = descriptor.Descriptor(
+  name='SendMessageRequest',
+  full_name='SendMessageRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    descriptor.FieldDescriptor(
+      name='id', full_name='SendMessageRequest.id', index=0,
+      number=1, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=unicode("", "utf-8"),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    descriptor.FieldDescriptor(
+      name='original_id', full_name='SendMessageRequest.original_id', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=unicode("", "utf-8"),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    descriptor.FieldDescriptor(
+      name='sender', full_name='SendMessageRequest.sender', index=2,
+      number=3, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=unicode("", "utf-8"),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    descriptor.FieldDescriptor(
+      name='recipient', full_name='SendMessageRequest.recipient', index=3,
+      number=4, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=unicode("", "utf-8"),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    descriptor.FieldDescriptor(
+      name='group', full_name='SendMessageRequest.group', index=4,
+      number=5, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=unicode("", "utf-8"),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    descriptor.FieldDescriptor(
+      name='mime', full_name='SendMessageRequest.mime', index=5,
+      number=6, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=unicode("", "utf-8"),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    descriptor.FieldDescriptor(
+      name='content', full_name='SendMessageRequest.content', index=6,
+      number=7, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=unicode("", "utf-8"),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    descriptor.FieldDescriptor(
+      name='encrypted', full_name='SendMessageRequest.encrypted', index=7,
+      number=8, type=8, cpp_type=7, label=1,
+      has_default_value=False, default_value=False,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    descriptor.FieldDescriptor(
+      name='url', full_name='SendMessageRequest.url', index=8,
+      number=9, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=unicode("", "utf-8"),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    descriptor.FieldDescriptor(
+      name='ttl', full_name='SendMessageRequest.ttl', index=9,
+      number=10, type=13, cpp_type=3, label=2,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  extension_ranges=[],
+  serialized_start=225,
+  serialized_end=404,
+)
+
+
+_SENDMESSAGERESPONSE = descriptor.Descriptor(
+  name='SendMessageResponse',
+  full_name='SendMessageResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    descriptor.FieldDescriptor(
+      name='status', full_name='SendMessageResponse.status', index=0,
+      number=1, type=13, cpp_type=3, label=2,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  extension_ranges=[],
+  serialized_start=406,
+  serialized_end=443,
+)
+
 _USERCACHELOOKUPRESPONSE_USER.containing_type = _USERCACHELOOKUPRESPONSE;
 _USERCACHELOOKUPRESPONSE.fields_by_name['user'].message_type = _USERCACHELOOKUPRESPONSE_USER
 DESCRIPTOR.message_types_by_name['BoxContainer'] = _BOXCONTAINER
 DESCRIPTOR.message_types_by_name['UsercacheLookupRequest'] = _USERCACHELOOKUPREQUEST
 DESCRIPTOR.message_types_by_name['UsercacheLookupResponse'] = _USERCACHELOOKUPRESPONSE
+DESCRIPTOR.message_types_by_name['SendMessageRequest'] = _SENDMESSAGEREQUEST
+DESCRIPTOR.message_types_by_name['SendMessageResponse'] = _SENDMESSAGERESPONSE
 
 class BoxContainer(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
@@ -169,5 +290,17 @@ class UsercacheLookupResponse(message.Message):
   DESCRIPTOR = _USERCACHELOOKUPRESPONSE
   
   # @@protoc_insertion_point(class_scope:UsercacheLookupResponse)
+
+class SendMessageRequest(message.Message):
+  __metaclass__ = reflection.GeneratedProtocolMessageType
+  DESCRIPTOR = _SENDMESSAGEREQUEST
+  
+  # @@protoc_insertion_point(class_scope:SendMessageRequest)
+
+class SendMessageResponse(message.Message):
+  __metaclass__ = reflection.GeneratedProtocolMessageType
+  DESCRIPTOR = _SENDMESSAGERESPONSE
+  
+  # @@protoc_insertion_point(class_scope:SendMessageResponse)
 
 # @@protoc_insertion_point(module_scope)

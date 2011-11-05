@@ -64,11 +64,19 @@ class Postoffice:
 
         return packs
 
+    def _extract(self, data, klass):
+        box = BoxContainer()
+        box.ParseFromString(data)
+        if box.name == klass.__name__:
+            pack = klass()
+            pack.ParseFromString(box.value)
+            return pack
+
     def user_lookup(self, userid_list):
         req = UsercacheLookupRequest()
         req.user_id.extend(userid_list)
         self._send(req)
         print "waiting for response..."
-        res = self._recv()
-        print "got response!"
-        print res
+        data = self._recv()
+        print "got response!", data
+        return self._extract(data[0], UsercacheLookupResponse)
