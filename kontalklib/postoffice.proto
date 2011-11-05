@@ -26,7 +26,7 @@ message SendMessageRequest {
     required string recipient = 4;
     optional string group = 5;
     required string mime = 6;
-    required string content = 7;
+    required bytes content = 7;
     optional bool encrypted = 8;
     optional string url = 9;
     required uint32 ttl = 10;

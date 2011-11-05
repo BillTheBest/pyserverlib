@@ -11,7 +11,7 @@ from google.protobuf import descriptor_pb2
 DESCRIPTOR = descriptor.FileDescriptor(
   name='postoffice.proto',
   package='',
-  serialized_pb='\n\x10postoffice.proto\"+\n\x0c\x42oxContainer\x12\x0c\n\x04name\x18\x01 \x02(\t\x12\r\n\x05value\x18\x02 \x02(\x0c\")\n\x16UsercacheLookupRequest\x12\x0f\n\x07user_id\x18\x03 \x03(\t\"r\n\x17UsercacheLookupResponse\x12+\n\x04user\x18\x03 \x03(\x0b\x32\x1d.UsercacheLookupResponse.User\x1a*\n\x04User\x12\x0f\n\x07user_id\x18\x01 \x02(\t\x12\x11\n\ttimestamp\x18\x02 \x01(\x04\"\xb3\x01\n\x12SendMessageRequest\x12\n\n\x02id\x18\x01 \x02(\t\x12\x13\n\x0boriginal_id\x18\x02 \x01(\t\x12\x0e\n\x06sender\x18\x03 \x02(\t\x12\x11\n\trecipient\x18\x04 \x02(\t\x12\r\n\x05group\x18\x05 \x01(\t\x12\x0c\n\x04mime\x18\x06 \x02(\t\x12\x0f\n\x07\x63ontent\x18\x07 \x02(\t\x12\x11\n\tencrypted\x18\x08 \x01(\x08\x12\x0b\n\x03url\x18\t \x01(\t\x12\x0b\n\x03ttl\x18\n \x02(\r\"%\n\x13SendMessageResponse\x12\x0e\n\x06status\x18\x01 \x02(\r')
+  serialized_pb='\n\x10postoffice.proto\"+\n\x0c\x42oxContainer\x12\x0c\n\x04name\x18\x01 \x02(\t\x12\r\n\x05value\x18\x02 \x02(\x0c\")\n\x16UsercacheLookupRequest\x12\x0f\n\x07user_id\x18\x03 \x03(\t\"r\n\x17UsercacheLookupResponse\x12+\n\x04user\x18\x03 \x03(\x0b\x32\x1d.UsercacheLookupResponse.User\x1a*\n\x04User\x12\x0f\n\x07user_id\x18\x01 \x02(\t\x12\x11\n\ttimestamp\x18\x02 \x01(\x04\"\xb3\x01\n\x12SendMessageRequest\x12\n\n\x02id\x18\x01 \x02(\t\x12\x13\n\x0boriginal_id\x18\x02 \x01(\t\x12\x0e\n\x06sender\x18\x03 \x02(\t\x12\x11\n\trecipient\x18\x04 \x02(\t\x12\r\n\x05group\x18\x05 \x01(\t\x12\x0c\n\x04mime\x18\x06 \x02(\t\x12\x0f\n\x07\x63ontent\x18\x07 \x02(\x0c\x12\x11\n\tencrypted\x18\x08 \x01(\x08\x12\x0b\n\x03url\x18\t \x01(\t\x12\x0b\n\x03ttl\x18\n \x02(\r\"%\n\x13SendMessageResponse\x12\x0e\n\x06status\x18\x01 \x02(\r')
 
 
 
@@ -192,8 +192,8 @@ _SENDMESSAGEREQUEST = descriptor.Descriptor(
       options=None),
     descriptor.FieldDescriptor(
       name='content', full_name='SendMessageRequest.content', index=6,
-      number=7, type=9, cpp_type=9, label=2,
-      has_default_value=False, default_value=unicode("", "utf-8"),
+      number=7, type=12, cpp_type=9, label=2,
+      has_default_value=False, default_value="",
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
