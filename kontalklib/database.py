@@ -217,7 +217,7 @@ class MessagesDb(MessengerDb):
  OR (LENGTH(recipient) = %d AND\
  ( (local_lock IS NULL) = (remote_lock IS NULL) OR\
  ((remote_lock IS NULL OR UNIX_TIMESTAMP() > (UNIX_TIMESTAMP(remote_lock) + %d))\
- XOR (local_lock IS NULL OR UNIX_TIMESTAMP() > (UNIX_TIMESTAMP(local_lock) + %d)))))' % \
+ AND (local_lock IS NULL OR UNIX_TIMESTAMP() > (UNIX_TIMESTAMP(local_lock) + %d)))))' % \
             (utils.USERID_LENGTH, utils.USERID_LENGTH_RESOURCE,
              self._config['message.lock_validity'], self._config['message.lock_validity'])
         rs = self.get_rows(q)
