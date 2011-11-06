@@ -141,14 +141,8 @@ class UsercacheDb(MessengerDb):
         q = 'DELETE FROM usercache WHERE UNIX_TIMESTAMP() > (UNIX_TIMESTAMP(timestamp) + %d)' % (self._config['usercache.expire'])
         return self.execute_update(q)
 
-    def update(self, userid, serverid = None, timestamp = None):
+    def update(self, userid, timestamp = None, google_regid = None):
         args = { 'userid' : userid }
-
-        if serverid:
-            server_str = '%(serverid)s'
-            args['serverid'] = serverid
-        else:
-            server_str = 'NULL'
 
         if timestamp:
             ts_str = '%(timestamp)s'
@@ -156,13 +150,15 @@ class UsercacheDb(MessengerDb):
         else:
             ts_str = 'sysdate()'
 
-        q = 'REPLACE INTO usercache VALUES (%%(userid)s, %s, %s)' % (server_str, ts_str)
+        q = 'REPLACE INTO usercache VALUES (%%(userid)s, %s)' % (server_str, ts_str)
         return self.execute_update(q, args)
+
+    def update_field(self, userid, field, value):
+        q = 'UPDATE usercache SET %s = %%s WHERE userid = %%s' % (field)
+        return self.execute_update(q, (value, userid))
 
     def _entry_changed(self, old, new):
         return (
-            # server has changed
-            (old['server'] != new['server']) or
             # timeout expired
             (new['timestamp'] > (old['timestamp'] + self._config['usercache.validity']))
         )
