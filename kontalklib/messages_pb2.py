@@ -11,7 +11,7 @@ from google.protobuf import descriptor_pb2
 DESCRIPTOR = descriptor.FileDescriptor(
   name='messages.proto',
   package='',
-  serialized_pb='\n\x0emessages.proto\"v\n\nServerInfo\x12\x0f\n\x07version\x18\x01 \x02(\t\x12\x17\n\x0f\x63lient_protocol\x18\x02 \x02(\r\x12\x17\n\x0fserver_protocol\x18\x03 \x02(\r\x12\x13\n\x0b\x66ingerprint\x18\x04 \x02(\t\x12\x10\n\x08supports\x18\x05 \x03(\t\"<\n\x0fPhoneValidation\x12\x17\n\x06status\x18\x01 \x02(\x0e\x32\x07.Status\x12\x10\n\x08sms_from\x18\x02 \x01(\t\"8\n\x0e\x41uthentication\x12\x17\n\x06status\x18\x01 \x02(\x0e\x32\x07.Status\x12\r\n\x05token\x18\x02 \x01(\t\")\n\x08Received\x12\x1d\n\x05\x65ntry\x18\x01 \x03(\x0b\x32\x0e.ReceivedEntry\"<\n\rReceivedEntry\x12\x17\n\x06status\x18\x01 \x02(\x0e\x32\x07.Status\x12\x12\n\nmessage_id\x18\x02 \x02(\t\"/\n\x0bMessageSent\x12 \n\x05\x65ntry\x18\x01 \x03(\x0b\x32\x11.MessageSentEntry\"P\n\x10MessageSentEntry\x12\x17\n\x06status\x18\x01 \x02(\x0e\x32\x07.Status\x12\x0f\n\x07user_id\x18\x02 \x02(\t\x12\x12\n\nmessage_id\x18\x03 \x01(\t\" \n\rLookupRequest\x12\x0f\n\x07user_id\x18\x01 \x03(\t\"5\n\x0eLookupResponse\x12#\n\x05\x65ntry\x18\x01 \x03(\x0b\x32\x14.LookupResponseEntry\"9\n\x13LookupResponseEntry\x12\x0f\n\x07user_id\x18\x01 \x02(\t\x12\x11\n\ttimestamp\x18\x02 \x01(\x04\"I\n\x0bNewMessages\x12\x17\n\x06status\x18\x01 \x02(\x0e\x32\x07.Status\x12!\n\x07message\x18\x02 \x03(\x0b\x32\x10.NewMessageEntry\"\x98\x01\n\x0fNewMessageEntry\x12\x12\n\nmessage_id\x18\x01 \x02(\t\x12\x0e\n\x06sender\x18\x02 \x02(\t\x12\r\n\x05group\x18\x03 \x03(\t\x12\x13\n\x0boriginal_id\x18\x04 \x01(\t\x12\x0c\n\x04mime\x18\x05 \x02(\t\x12\x11\n\tencrypted\x18\x06 \x02(\x08\x12\x0f\n\x07\x63ontent\x18\x07 \x02(\x0c\x12\x0b\n\x03url\x18\x08 \x01(\t*\xcf\x01\n\x06Status\x12\x12\n\x0eSTATUS_SUCCESS\x10\x00\x12\x10\n\x0cSTATUS_ERROR\x10\x01\x12\x0f\n\x0bSTATUS_BUSY\x10\x02\x12\x1e\n\x1aSTATUS_VERIFICATION_FAILED\x10\x03\x12\x1f\n\x1bSTATUS_INVALID_PHONE_NUMBER\x10\x04\x12\x16\n\x12STATUS_TTL_EXPIRED\x10\x05\x12\x18\n\x14STATUS_USER_NOTFOUND\x10\x06\x12\x1b\n\x17STATUS_MESSAGE_NOTFOUND\x10\x07\x42 \n\x12org.kontalk.clientB\x08ProtocolH\x03')
+  serialized_pb='\n\x0emessages.proto\"v\n\nServerInfo\x12\x0f\n\x07version\x18\x01 \x02(\t\x12\x17\n\x0f\x63lient_protocol\x18\x02 \x02(\r\x12\x17\n\x0fserver_protocol\x18\x03 \x02(\r\x12\x13\n\x0b\x66ingerprint\x18\x04 \x02(\t\x12\x10\n\x08supports\x18\x05 \x03(\t\"<\n\x0fPhoneValidation\x12\x17\n\x06status\x18\x01 \x02(\x0e\x32\x07.Status\x12\x10\n\x08sms_from\x18\x02 \x01(\t\"8\n\x0e\x41uthentication\x12\x17\n\x06status\x18\x01 \x02(\x0e\x32\x07.Status\x12\r\n\x05token\x18\x02 \x01(\t\")\n\x08Received\x12\x1d\n\x05\x65ntry\x18\x01 \x03(\x0b\x32\x0e.ReceivedEntry\"<\n\rReceivedEntry\x12\x17\n\x06status\x18\x01 \x02(\x0e\x32\x07.Status\x12\x12\n\nmessage_id\x18\x02 \x02(\t\"/\n\x0bMessageSent\x12 \n\x05\x65ntry\x18\x01 \x03(\x0b\x32\x11.MessageSentEntry\"P\n\x10MessageSentEntry\x12\x17\n\x06status\x18\x01 \x02(\x0e\x32\x07.Status\x12\x0f\n\x07user_id\x18\x02 \x02(\t\x12\x12\n\nmessage_id\x18\x03 \x01(\t\" \n\rLookupRequest\x12\x0f\n\x07user_id\x18\x01 \x03(\t\"5\n\x0eLookupResponse\x12#\n\x05\x65ntry\x18\x01 \x03(\x0b\x32\x14.LookupResponseEntry\"9\n\x13LookupResponseEntry\x12\x0f\n\x07user_id\x18\x01 \x02(\t\x12\x11\n\ttimestamp\x18\x02 \x01(\x04\"I\n\x0bNewMessages\x12\x17\n\x06status\x18\x01 \x02(\x0e\x32\x07.Status\x12!\n\x07message\x18\x02 \x03(\x0b\x32\x10.NewMessageEntry\"\x98\x01\n\x0fNewMessageEntry\x12\x12\n\nmessage_id\x18\x01 \x02(\t\x12\x0e\n\x06sender\x18\x02 \x02(\t\x12\r\n\x05group\x18\x03 \x03(\t\x12\x13\n\x0boriginal_id\x18\x04 \x01(\t\x12\x0c\n\x04mime\x18\x05 \x02(\t\x12\x11\n\tencrypted\x18\x06 \x02(\x08\x12\x0f\n\x07\x63ontent\x18\x07 \x02(\x0c\x12\x0b\n\x03url\x18\x08 \x01(\t\"0\n\nServerList\x12\x11\n\ttimestamp\x18\x01 \x02(\x04\x12\x0f\n\x07\x61\x64\x64ress\x18\x02 \x03(\t*\xcf\x01\n\x06Status\x12\x12\n\x0eSTATUS_SUCCESS\x10\x00\x12\x10\n\x0cSTATUS_ERROR\x10\x01\x12\x0f\n\x0bSTATUS_BUSY\x10\x02\x12\x1e\n\x1aSTATUS_VERIFICATION_FAILED\x10\x03\x12\x1f\n\x1bSTATUS_INVALID_PHONE_NUMBER\x10\x04\x12\x16\n\x12STATUS_TTL_EXPIRED\x10\x05\x12\x18\n\x14STATUS_USER_NOTFOUND\x10\x06\x12\x1b\n\x17STATUS_MESSAGE_NOTFOUND\x10\x07\x42 \n\x12org.kontalk.clientB\x08ProtocolH\x03')
 
 _STATUS = descriptor.EnumDescriptor(
   name='Status',
@@ -54,8 +54,8 @@ _STATUS = descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=873,
-  serialized_end=1080,
+  serialized_start=923,
+  serialized_end=1130,
 )
 
 
@@ -531,6 +531,41 @@ _NEWMESSAGEENTRY = descriptor.Descriptor(
   serialized_end=870,
 )
 
+
+_SERVERLIST = descriptor.Descriptor(
+  name='ServerList',
+  full_name='ServerList',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    descriptor.FieldDescriptor(
+      name='timestamp', full_name='ServerList.timestamp', index=0,
+      number=1, type=4, cpp_type=4, label=2,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    descriptor.FieldDescriptor(
+      name='address', full_name='ServerList.address', index=1,
+      number=2, type=9, cpp_type=9, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  extension_ranges=[],
+  serialized_start=872,
+  serialized_end=920,
+)
+
 _PHONEVALIDATION.fields_by_name['status'].enum_type = _STATUS
 _AUTHENTICATION.fields_by_name['status'].enum_type = _STATUS
 _RECEIVED.fields_by_name['entry'].message_type = _RECEIVEDENTRY
@@ -552,6 +587,7 @@ DESCRIPTOR.message_types_by_name['LookupResponse'] = _LOOKUPRESPONSE
 DESCRIPTOR.message_types_by_name['LookupResponseEntry'] = _LOOKUPRESPONSEENTRY
 DESCRIPTOR.message_types_by_name['NewMessages'] = _NEWMESSAGES
 DESCRIPTOR.message_types_by_name['NewMessageEntry'] = _NEWMESSAGEENTRY
+DESCRIPTOR.message_types_by_name['ServerList'] = _SERVERLIST
 
 class ServerInfo(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
@@ -624,5 +660,11 @@ class NewMessageEntry(message.Message):
   DESCRIPTOR = _NEWMESSAGEENTRY
   
   # @@protoc_insertion_point(class_scope:NewMessageEntry)
+
+class ServerList(message.Message):
+  __metaclass__ = reflection.GeneratedProtocolMessageType
+  DESCRIPTOR = _SERVERLIST
+  
+  # @@protoc_insertion_point(class_scope:ServerList)
 
 # @@protoc_insertion_point(module_scope)

@@ -91,3 +91,9 @@ message NewMessageEntry {
     required bytes content = 7;
     optional string url = 8;
 }
+
+// server list
+message ServerList {
+    required uint64 timestamp = 1;
+    repeated string address = 2;
+}
