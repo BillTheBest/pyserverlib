@@ -121,3 +121,19 @@ def generate_preview_content(filename, mime):
         buf = StringIO.StringIO()
         im.save(buf, format=supported_mimes[mime])
         return buf.getvalue()
+
+def generate_filename(mime):
+    '''Generates a random filename for the given mime type.'''
+    supported_mimes = {
+        'image/png' : 'png',
+        'image/jpeg' : 'jpg',
+        'image/gif' : 'gif'
+    }
+
+    try:
+        ext = supported_mimes[mime]
+    except:
+        # generic extension
+        ext = 'bin'
+
+    return 'att%s.%s' % (rand_str(6, CHARSBOX_AZN_LOWERCASE), ext)
