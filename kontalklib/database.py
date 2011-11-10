@@ -150,7 +150,7 @@ class UsercacheDb(MessengerDb):
         else:
             ts_str = 'sysdate()'
 
-        q = 'REPLACE INTO usercache (userid, timestamp) VALUES (%%(userid)s, %s)' % (ts_str)
+        q = 'INSERT INTO usercache (userid, timestamp) VALUES (%%(userid)s, %s) ON DUPLICATE KEY UPDATE timestamp = %s' % (ts_str, ts_str)
         return self.execute_update(q, args)
 
     def update_field(self, userid, field, value):
