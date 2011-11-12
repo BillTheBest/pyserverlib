@@ -18,7 +18,7 @@ def user_token(userid, fp):
     plus the resource (in one big string, 40+8 characters),
     and the fingerprint of the server he registered to
     '''
-    string = '%s%s|%s' % (userid, utils.rand_str(8, utils.CHARSBOX_AZN_UPPERCASE), fp)
+    string = '%s|%s' % (userid, fp)
     plain = core.Data(string)
     cipher = core.Data()
     ctx = core.Context()

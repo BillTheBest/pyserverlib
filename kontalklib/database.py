@@ -373,11 +373,11 @@ class ValidationsDb(MessengerDb):
         '''Deletes a validation code record.'''
         return self.execute_update('DELETE FROM validations WHERE code = %s', (code, ))
 
-    def update(self, phone, code = False):
+    def update(self, userid, code = False):
         '''Add/replace a validation record.'''
         if not code:
             code = utils.rand_str(utils.VALIDATION_CODE_LENGTH, utils.CHARSBOX_AZN_UPPERCASE)
-        fields = (utils.sha1(phone), code)
+        fields = (userid, code)
 
         return (self.execute_update(
             'REPLACE INTO validations VALUES (%s, %s)', fields),
