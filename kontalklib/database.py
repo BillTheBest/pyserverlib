@@ -215,6 +215,19 @@ class MessagesDb(MessengerDb):
 
         return r
 
+    def get_multi(self, orig_id, resolve_group = False):
+        '''Retrives multiple messages by orig_id.'''
+        q = 'SELECT * FROM messages WHERE orig_id = %s'
+        rs = self.get_rows(q, (orig_id, ))
+        if resolve_groups:
+            self.resolve_groups(rs)
+        return rs
+
+    def get_count(self, orig_id):
+        q = 'SELECT COUNT(orig_id) CNT FROM messages WHERE orig_id = %s'
+        rs = self.get_row(q, (orig_id, ))
+        return long(rs['CNT']) if rs else 0
+
     def generics(self, resolve_groups = False):
         '''Returns messages with generic recipient.'''
         q = 'SELECT * FROM messages WHERE LENGTH(recipient) = ' + str(utils.USERID_LENGTH)
