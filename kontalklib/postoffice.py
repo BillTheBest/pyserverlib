@@ -54,6 +54,9 @@ class Postoffice:
     def __init__(self, conn):
         self._conn = conn
 
+    def close(self):
+        self._conn.close()
+
     def _send(self, pack):
         box = BoxContainer()
         box.name = pack.__class__.__name__
@@ -62,9 +65,7 @@ class Postoffice:
         self._conn.send(struct.pack(self.structFormat, len(data)) + data)
 
     def _recv(self):
-        # TODO segmented receive
         recd = self._conn.recv(4096)
-
         packs = []
         self.recvd = self.recvd + recd
         while len(self.recvd) >= self.prefixLength: #and not self.paused:
@@ -97,3 +98,8 @@ class Postoffice:
         data = self._recv()
         print "got response!", data
         return self._extract(data[0], UsercacheLookupResponse)
+
+    def message_queue(self):
+        req = MessageQueueRequest()
+        self._send(req)
+        # no need for a response

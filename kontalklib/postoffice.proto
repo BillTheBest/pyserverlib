@@ -49,3 +49,6 @@ message SendMessageRequest {
 message SendMessageResponse {
     required Status status = 1;
 }
+
+message MessageQueueRequest {
+}
