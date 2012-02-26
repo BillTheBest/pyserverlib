@@ -11,7 +11,7 @@ from google.protobuf import descriptor_pb2
 DESCRIPTOR = descriptor.FileDescriptor(
   name='postoffice.proto',
   package='',
-  serialized_pb='\n\x10postoffice.proto\"+\n\x0c\x42oxContainer\x12\x0c\n\x04name\x18\x01 \x02(\t\x12\r\n\x05value\x18\x02 \x02(\x0c\")\n\x16UsercacheLookupRequest\x12\x0f\n\x07user_id\x18\x03 \x03(\t\"\x82\x01\n\x17UsercacheLookupResponse\x12+\n\x04user\x18\x03 \x03(\x0b\x32\x1d.UsercacheLookupResponse.User\x1a:\n\x04User\x12\x0f\n\x07user_id\x18\x01 \x02(\t\x12\x11\n\ttimestamp\x18\x02 \x01(\x04\x12\x0e\n\x06status\x18\x03 \x01(\t\"\xb3\x01\n\x12SendMessageRequest\x12\n\n\x02id\x18\x01 \x02(\t\x12\x13\n\x0boriginal_id\x18\x02 \x01(\t\x12\x0e\n\x06sender\x18\x03 \x02(\t\x12\x11\n\trecipient\x18\x04 \x02(\t\x12\r\n\x05group\x18\x05 \x01(\t\x12\x0c\n\x04mime\x18\x06 \x02(\t\x12\x0f\n\x07\x63ontent\x18\x07 \x02(\x0c\x12\x11\n\tencrypted\x18\x08 \x01(\x08\x12\x0b\n\x03url\x18\t \x01(\t\x12\x0b\n\x03ttl\x18\n \x02(\r\".\n\x13SendMessageResponse\x12\x17\n\x06status\x18\x01 \x02(\x0e\x32\x07.Status\"\x15\n\x13MessageQueueRequest*\xcf\x01\n\x06Status\x12\x12\n\x0eSTATUS_SUCCESS\x10\x00\x12\x10\n\x0cSTATUS_ERROR\x10\x01\x12\x0f\n\x0bSTATUS_BUSY\x10\x02\x12\x1e\n\x1aSTATUS_VERIFICATION_FAILED\x10\x03\x12\x1f\n\x1bSTATUS_INVALID_PHONE_NUMBER\x10\x04\x12\x16\n\x12STATUS_TTL_EXPIRED\x10\x05\x12\x18\n\x14STATUS_USER_NOTFOUND\x10\x06\x12\x1b\n\x17STATUS_MESSAGE_NOTFOUND\x10\x07')
+  serialized_pb='\n\x10postoffice.proto\"+\n\x0c\x42oxContainer\x12\x0c\n\x04name\x18\x01 \x02(\t\x12\r\n\x05value\x18\x02 \x02(\x0c\")\n\x16UsercacheLookupRequest\x12\x0f\n\x07user_id\x18\x03 \x03(\t\"\x82\x01\n\x17UsercacheLookupResponse\x12+\n\x04user\x18\x03 \x03(\x0b\x32\x1d.UsercacheLookupResponse.User\x1a:\n\x04User\x12\x0f\n\x07user_id\x18\x01 \x02(\t\x12\x11\n\ttimestamp\x18\x02 \x01(\x04\x12\x0e\n\x06status\x18\x03 \x01(\t\"\xb3\x01\n\x12SendMessageRequest\x12\n\n\x02id\x18\x01 \x02(\t\x12\x13\n\x0boriginal_id\x18\x02 \x01(\t\x12\x0e\n\x06sender\x18\x03 \x02(\t\x12\x11\n\trecipient\x18\x04 \x02(\t\x12\r\n\x05group\x18\x05 \x01(\t\x12\x0c\n\x04mime\x18\x06 \x02(\t\x12\x0f\n\x07\x63ontent\x18\x07 \x02(\x0c\x12\x11\n\tencrypted\x18\x08 \x01(\x08\x12\x0b\n\x03url\x18\t \x01(\t\x12\x0b\n\x03ttl\x18\n \x02(\r\".\n\x13SendMessageResponse\x12\x17\n\x06status\x18\x01 \x02(\x0e\x32\x07.Status\"&\n\x13MessageQueueRequest\x12\x0f\n\x07user_id\x18\x01 \x01(\t\"-\n\x14MessageQueueResponse\x12\x15\n\rmessage_count\x18\x01 \x02(\r*\xcf\x01\n\x06Status\x12\x12\n\x0eSTATUS_SUCCESS\x10\x00\x12\x10\n\x0cSTATUS_ERROR\x10\x01\x12\x0f\n\x0bSTATUS_BUSY\x10\x02\x12\x1e\n\x1aSTATUS_VERIFICATION_FAILED\x10\x03\x12\x1f\n\x1bSTATUS_INVALID_PHONE_NUMBER\x10\x04\x12\x16\n\x12STATUS_TTL_EXPIRED\x10\x05\x12\x18\n\x14STATUS_USER_NOTFOUND\x10\x06\x12\x1b\n\x17STATUS_MESSAGE_NOTFOUND\x10\x07')
 
 _STATUS = descriptor.EnumDescriptor(
   name='Status',
@@ -54,8 +54,8 @@ _STATUS = descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=495,
-  serialized_end=702,
+  serialized_start=559,
+  serialized_end=766,
 )
 
 
@@ -328,6 +328,13 @@ _MESSAGEQUEUEREQUEST = descriptor.Descriptor(
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
+    descriptor.FieldDescriptor(
+      name='user_id', full_name='MessageQueueRequest.user_id', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=unicode("", "utf-8"),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
   ],
   extensions=[
   ],
@@ -338,7 +345,35 @@ _MESSAGEQUEUEREQUEST = descriptor.Descriptor(
   is_extendable=False,
   extension_ranges=[],
   serialized_start=471,
-  serialized_end=492,
+  serialized_end=509,
+)
+
+
+_MESSAGEQUEUERESPONSE = descriptor.Descriptor(
+  name='MessageQueueResponse',
+  full_name='MessageQueueResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    descriptor.FieldDescriptor(
+      name='message_count', full_name='MessageQueueResponse.message_count', index=0,
+      number=1, type=13, cpp_type=3, label=2,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  extension_ranges=[],
+  serialized_start=511,
+  serialized_end=556,
 )
 
 _USERCACHELOOKUPRESPONSE_USER.containing_type = _USERCACHELOOKUPRESPONSE;
@@ -350,6 +385,7 @@ DESCRIPTOR.message_types_by_name['UsercacheLookupResponse'] = _USERCACHELOOKUPRE
 DESCRIPTOR.message_types_by_name['SendMessageRequest'] = _SENDMESSAGEREQUEST
 DESCRIPTOR.message_types_by_name['SendMessageResponse'] = _SENDMESSAGERESPONSE
 DESCRIPTOR.message_types_by_name['MessageQueueRequest'] = _MESSAGEQUEUEREQUEST
+DESCRIPTOR.message_types_by_name['MessageQueueResponse'] = _MESSAGEQUEUERESPONSE
 
 class BoxContainer(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
@@ -392,5 +428,11 @@ class MessageQueueRequest(message.Message):
   DESCRIPTOR = _MESSAGEQUEUEREQUEST
   
   # @@protoc_insertion_point(class_scope:MessageQueueRequest)
+
+class MessageQueueResponse(message.Message):
+  __metaclass__ = reflection.GeneratedProtocolMessageType
+  DESCRIPTOR = _MESSAGEQUEUERESPONSE
+  
+  # @@protoc_insertion_point(class_scope:MessageQueueResponse)
 
 # @@protoc_insertion_point(module_scope)

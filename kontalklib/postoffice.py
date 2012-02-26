@@ -94,12 +94,19 @@ class Postoffice:
         req = UsercacheLookupRequest()
         req.user_id.extend(userid_list)
         self._send(req)
-        print "waiting for response..."
+        #print "waiting for response..."
         data = self._recv()
-        print "got response!", data
+        #print "got response!", data
         return self._extract(data[0], UsercacheLookupResponse)
 
-    def message_queue(self):
+    def message_queue(self, userid = None):
         req = MessageQueueRequest()
+        if userid:
+            req.user_id = userid
         self._send(req)
-        # no need for a response
+        # postoffice-driven polling requested - wait for response
+        if userid:
+            #print "waiting for response..."
+            data = self._recv()
+            #print "got response!", data
+            return self._extract(data[0], MessageQueueResponse)

@@ -238,46 +238,18 @@ class MessagesDb(MessengerDb):
 
     def pending(self, resolve_groups = False):
         '''Returns messages which need to be processed by the Postoffice.'''
-        q = 'SELECT * FROM messages WHERE (LENGTH(recipient) = %d\
- AND remote_lock IS NULL AND local_lock IS NULL)\
- OR (LENGTH(recipient) = %d AND\
- ( (local_lock IS NULL) = (remote_lock IS NULL) OR\
- ((remote_lock IS NULL OR UNIX_TIMESTAMP() > (UNIX_TIMESTAMP(remote_lock) + %d))\
- AND (local_lock IS NULL OR UNIX_TIMESTAMP() > (UNIX_TIMESTAMP(local_lock) + %d)))))' % \
-            (utils.USERID_LENGTH, utils.USERID_LENGTH_RESOURCE,
-             self._config['message.lock_validity'], self._config['message.lock_validity'])
+        q = 'SELECT * FROM messages WHERE LENGTH(recipient) = %d' % \
+            (utils.USERID_LENGTH)
         rs = self.get_rows(q)
         if resolve_groups:
             self.resolve_groups(rs)
         return rs
 
-    def incoming(self, userid, local_lock = False, remote_lock = False, resolve_groups = False):
+    def incoming(self, userid, resolve_groups = False):
         '''Retrieves the list of incoming message for a user.'''
-        extra = ''
-        fields = {
-            # FIXME handle resources
-            'userid' : userid
-        }
-
-        if local_lock == None:
-            extra = ' AND local_lock IS NULL'
-        elif local_lock == True:
-            extra = ' AND local_lock IS NOT NULL'
-        elif local_lock == 1:
-            extra = ' AND unix_timestamp() > (unix_timestamp(local_lock) + ' + self._config['message.lock_validity'] + ')'
-
-        if remote_lock == None:
-            extra = ' AND remote_lock IS NULL'
-        elif remote_lock == True:
-            extra = ' AND remote_lock IS NOT NULL'
-        elif remote_lock == 1:
-            extra = ' AND unix_timestamp() > (unix_timestamp(remote_lock) + ' + self._config['message.lock_validity'] + ')'
-
-        # FIXME handle resources
-        rs = self.get_rows('SELECT * FROM messages WHERE recipient = %(userid)s' + extra, fields)
+        rs = self.get_rows('SELECT * FROM messages WHERE recipient = %(userid)s', { 'userid' : userid })
         if resolve_groups:
             self.resolve_groups(rs)
-
         return rs
 
     def expired(self, resolve_groups = False):
@@ -298,15 +270,10 @@ class MessagesDb(MessengerDb):
 
         return rs
 
-    def clean_locks(self):
-        '''Cleans remote_lock on generic messages.'''
-        return self.execute_update('UPDATE messages SET remote_lock = NULL WHERE LENGTH(recipient) = %d' % \
-            utils.USERID_LENGTH)
-
     def delete(self, msgid):
         return self.execute_update('DELETE FROM messages WHERE id = %s', [ msgid ])
 
-    def insert(self, id, sender, recipient, group, mime, content, encrypted, filename, ttl, orig_id = None, local_lock = False, remote_lock = False):
+    def insert(self, id, sender, recipient, group, mime, content, encrypted, filename, ttl, orig_id = None):
         if not id:
             id = self.generate_id()
 
@@ -325,10 +292,7 @@ class MessagesDb(MessengerDb):
             ttl
         ]
 
-        local = 'sysdate()' if local_lock else 'NULL'
-        remote = 'sysdate()' if remote_lock else 'NULL'
-
-        if self.execute_update('INSERT INTO messages VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, '+local+', '+remote+')', args):
+        if self.execute_update('INSERT INTO messages VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', args):
             return id
 
         return False
@@ -344,9 +308,7 @@ class MessagesDb(MessengerDb):
             utils.dict_get_none(msg, 'encrypted', False),
             utils.dict_get(msg, 'filename'),
             utils.dict_get(msg, 'ttl'),
-            utils.dict_get(msg, 'orig_id'),
-            utils.dict_get_none(msg, 'local_lock', False),
-            utils.dict_get_none(msg, 'remote_lock', False)
+            utils.dict_get(msg, 'orig_id')
         )
 
     def ttl_dec(self, msgid, count = 1):
@@ -356,18 +318,6 @@ class MessagesDb(MessengerDb):
 
     def ttl_half(self, msgid):
         return self.execute_update("UPDATE messages SET ttl = ttl / 2 WHERE id = %s", (msgid,))
-
-    def local_lock(self, msgid, clear = False):
-        what = 'NULL' if clear else 'sysdate()'
-        return self.execute_update('UPDATE messages SET local_lock = ' + what + ' WHERE id = %s', (msgid, ))
-
-    def remote_lock(self, msgid, clear = False):
-        what = 'NULL' if clear else 'sysdate()'
-        return self.execute_update('UPDATE messages SET remote_lock = ' + what + ' WHERE id = %s', (msgid, ))
-
-    def ttl_dec_for_local_lock(self, msgid):
-        return self.execute_update('UPDATE messages SET remote_lock = NULL, local_lock = sysdate(), ttl = ttl - 1 WHERE id = %s',
-            (msgid, ))
 
     def generate_id(self):
         # TODO %z is deprecated
