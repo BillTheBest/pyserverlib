@@ -64,8 +64,14 @@ class Postoffice:
         data = box.SerializeToString()
         self._conn.send(struct.pack(self.structFormat, len(data)) + data)
 
-    def _recv(self):
-        recd = self._conn.recv(4096)
+    def _recv(self, timeout = None):
+        self._conn.settimeout(timeout)
+        try:
+            recd = self._conn.recv(4096)
+        except:
+            # timeout - no data
+            return []
+
         packs = []
         self.recvd = self.recvd + recd
         while len(self.recvd) >= self.prefixLength: #and not self.paused:
@@ -73,7 +79,7 @@ class Postoffice:
                 self.structFormat, self.recvd[:self.prefixLength])
             if length > self.MAX_LENGTH:
                 self._conn.close()
-                return
+                break   # was return
             if len(self.recvd) < length + self.prefixLength:
                 break
             packet = self.recvd[self.prefixLength:length + self.prefixLength]
@@ -94,9 +100,7 @@ class Postoffice:
         req = UsercacheLookupRequest()
         req.user_id.extend(userid_list)
         self._send(req)
-        #print "waiting for response..."
-        data = self._recv()
-        #print "got response!", data
+        data = self._recv(10)
         return self._extract(data[0], UsercacheLookupResponse)
 
     def message_queue(self, userid = None):
@@ -106,7 +110,5 @@ class Postoffice:
         self._send(req)
         # postoffice-driven polling requested - wait for response
         if userid:
-            #print "waiting for response..."
-            data = self._recv()
-            #print "got response!", data
+            data = self._recv(60)
             return self._extract(data[0], MessageQueueResponse)
