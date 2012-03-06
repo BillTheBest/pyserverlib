@@ -1,0 +1,53 @@
+// Client protocol definitions - revision 3
+option java_package = "org.kontalk.client";
+option java_outer_classname = "Protocol";
+option optimize_for = LITE_RUNTIME;
+
+
+// authentication request
+message AuthenticateRequest {
+    required string token = 1;
+}
+
+// authentication response
+message AuthenticateResponse {
+    required bool valid = 1;
+}
+
+// message post request
+message MessagePostRequest {
+    repeated string recipient = 1;
+    optional string mime = 2;
+    repeated string flags = 3;
+    optional bytes content = 4;
+}
+
+// message post response
+message MessagePostResponse {
+    repeated MessageSent entry = 1;
+}
+
+// message post response entry
+message MessageSent {
+    enum MessageSentStatus {
+        STATUS_SUCCESS = 0;
+        STATUS_ERROR = 1;
+        STATUS_BUSY = 2;
+        STATUS_USER_NOTFOUND = 3;
+    }
+    required MessageSentStatus status = 1;
+    required string user_id = 2;
+    optional string message_id = 3;
+}
+
+// new message
+message NewMessage {
+    required string message_id = 1;
+    required string sender = 2;
+    repeated string group = 3;
+    optional string original_id = 4;
+    required string mime = 5;
+    required bool encrypted = 6;
+    required bytes content = 7;
+    optional string url = 8;
+}

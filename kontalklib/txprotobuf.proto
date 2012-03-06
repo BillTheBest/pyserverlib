@@ -1,0 +1,7 @@
+message BoxContainer {
+  required string name = 1;
+  required bytes value = 2;
+  // transaction id -- uniquely identifies a packet conversation
+  // (i.e. request/response couple)
+  optional string tx_id = 3;
+}

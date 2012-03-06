@@ -1,4 +1,5 @@
 #!/bin/sh
 
-protoc --python_out=. postoffice.proto &&
-protoc --python_out=. messages.proto
+protoc --python_out=. txprotobuf.proto &&
+protoc --python_out=. c2s.proto &&
+protoc --python_out=. s2s.proto
