@@ -27,6 +27,7 @@ CHARSBOX_AZN_CASEINS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234
 CHARSBOX_AZN_LOWERCASE = 'abcdefghijklmnopqrstuvwxyz1234567890'
 CHARSBOX_AZN_UPPERCASE = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'
 
+import cPickle, pickle, json, csv, os, shutil
 import random, base64, hashlib
 import Image, StringIO
 
@@ -154,3 +155,67 @@ def generate_filename(mime):
         ext = 'bin'
 
     return 'att%s.%s' % (rand_str(6, CHARSBOX_AZN_LOWERCASE), ext)
+
+
+## {{{ http://code.activestate.com/recipes/576642/ (r10)
+class PersistentDict(dict):
+    ''' Persistent dictionary with an API compatible with shelve and anydbm.
+
+    The dict is kept in memory, so the dictionary operations run as fast as
+    a regular dictionary.
+
+    Write to disk is delayed until close or sync (similar to gdbm's fast mode).
+
+    Input file format is automatically discovered.
+    Output file format is selectable between pickle, json, and csv.
+    All three serialization formats are backed by fast C implementations.
+
+    '''
+
+    def __init__(self, filename, flag='c', mode=None, *args, **kwds):
+        self.flag = flag                    # r=readonly, c=create, or n=new
+        self.mode = mode                    # None or an octal triple like 0644
+        self.filename = filename
+        if flag != 'n' and os.access(filename, os.R_OK):
+            fileobj = open(filename, 'rb')
+            with fileobj:
+                self.load(fileobj)
+        dict.__init__(self, *args, **kwds)
+
+    def sync(self):
+        '''Write dict to disk'''
+        if self.flag == 'r':
+            return
+        filename = self.filename
+        tempname = filename + '.tmp'
+        fileobj = open(tempname, 'wb')
+        try:
+            if len(self) > 0:
+                self.dump(fileobj)
+        except Exception:
+            os.remove(tempname)
+            raise
+        finally:
+            fileobj.close()
+        shutil.move(tempname, self.filename)    # atomic commit
+        if self.mode is not None:
+            os.chmod(self.filename, self.mode)
+
+    def close(self):
+        self.sync()
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *exc_info):
+        self.close()
+
+    def dump(self, fileobj):
+        cPickle.dump(dict(self), fileobj, pickle.HIGHEST_PROTOCOL)
+
+    def load(self, fileobj):
+        try:
+            fileobj.seek(0)
+            return self.update(cPickle.load(fileobj))
+        except Exception:
+            pass
