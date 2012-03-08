@@ -51,3 +51,19 @@ message NewMessage {
     required bytes content = 7;
     optional string url = 8;
 }
+
+message MessageAckRequest {
+    repeated string message_id = 1;
+}
+
+message MessageAckResponse {
+    message Entry {
+        enum MessageAckStatus {
+            STATUS_SUCCESS = 0;
+            STATUS_ERROR = 1;
+            STATUS_NOTFOUND = 2;
+        }
+        required string message_id = 1;
+        required MessageAckStatus status = 2;
+    }
+}

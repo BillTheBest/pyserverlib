@@ -27,7 +27,7 @@ CHARSBOX_AZN_CASEINS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234
 CHARSBOX_AZN_LOWERCASE = 'abcdefghijklmnopqrstuvwxyz1234567890'
 CHARSBOX_AZN_UPPERCASE = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'
 
-import cPickle, pickle, json, csv, os, shutil
+import cPickle, pickle, os, shutil
 import random, base64, hashlib
 import Image, StringIO
 
@@ -155,6 +155,13 @@ def generate_filename(mime):
         ext = 'bin'
 
     return 'att%s.%s' % (rand_str(6, CHARSBOX_AZN_LOWERCASE), ext)
+
+def touch(fname, create = True):
+        if os.path.exists(fname):
+            os.utime(fname, None)
+        elif create:
+            open(fname, 'w').close()
+
 
 
 ## {{{ http://code.activestate.com/recipes/576642/ (r10)
