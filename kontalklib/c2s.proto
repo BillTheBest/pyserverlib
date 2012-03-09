@@ -24,32 +24,32 @@ message MessagePostRequest {
 
 // message post response
 message MessagePostResponse {
-    repeated MessageSent entry = 1;
-}
-
-// message post response entry
-message MessageSent {
-    enum MessageSentStatus {
-        STATUS_SUCCESS = 0;
-        STATUS_ERROR = 1;
-        STATUS_BUSY = 2;
-        STATUS_USER_NOTFOUND = 3;
+    message MessageSent {
+        enum MessageSentStatus {
+            STATUS_SUCCESS = 0;
+            STATUS_ERROR = 1;
+            STATUS_BUSY = 2;
+            STATUS_USER_NOTFOUND = 3;
+        }
+        required MessageSentStatus status = 1;
+        required string user_id = 2;
+        optional string message_id = 3;
     }
-    required MessageSentStatus status = 1;
-    required string user_id = 2;
-    optional string message_id = 3;
+    repeated MessageSent entry = 1;
 }
 
 // new message
 message NewMessage {
     required string message_id = 1;
-    required string sender = 2;
-    repeated string group = 3;
-    optional string original_id = 4;
-    required string mime = 5;
-    required bool encrypted = 6;
-    required bytes content = 7;
-    optional string url = 8;
+    // timestamp string: YYYY-MM-DD hh:mm:ss +zhzm
+    required string timestamp = 2;
+    required string sender = 3;
+    repeated string group = 4;
+    optional string original_id = 5;
+    required string mime = 6;
+    repeated string flags = 7;
+    required bytes content = 8;
+    optional string url = 9;
 }
 
 message MessageAckRequest {
@@ -66,4 +66,21 @@ message MessageAckResponse {
         required string message_id = 1;
         required MessageAckStatus status = 2;
     }
+    repeated Entry entry = 1;
+}
+
+message ReceiptMessage {
+    message Entry {
+        enum ReceiptStatus {
+            STATUS_SUCCESS = 0;
+            STATUS_ERROR = 1;
+            STATUS_USER_NOTFOUND = 2;
+            STATUS_TTL_EXPIRED = 3;
+        }
+        required string message_id = 1;
+        required ReceiptStatus status = 2;
+        // timestamp string: YYYY-MM-DD hh:mm:ss +zhzm
+        optional string timestamp = 3;
+    }
+    repeated Entry entry = 1;
 }

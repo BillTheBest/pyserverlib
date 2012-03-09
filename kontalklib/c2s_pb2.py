@@ -11,13 +11,13 @@ from google.protobuf import descriptor_pb2
 DESCRIPTOR = descriptor.FileDescriptor(
   name='c2s.proto',
   package='',
-  serialized_pb='\n\tc2s.proto\"$\n\x13\x41uthenticateRequest\x12\r\n\x05token\x18\x01 \x02(\t\"%\n\x14\x41uthenticateResponse\x12\r\n\x05valid\x18\x01 \x02(\x08\"U\n\x12MessagePostRequest\x12\x11\n\trecipient\x18\x01 \x03(\t\x12\x0c\n\x04mime\x18\x02 \x01(\t\x12\r\n\x05\x66lags\x18\x03 \x03(\t\x12\x0f\n\x07\x63ontent\x18\x04 \x01(\x0c\"2\n\x13MessagePostResponse\x12\x1b\n\x05\x65ntry\x18\x01 \x03(\x0b\x32\x0c.MessageSent\"\xc8\x01\n\x0bMessageSent\x12.\n\x06status\x18\x01 \x02(\x0e\x32\x1e.MessageSent.MessageSentStatus\x12\x0f\n\x07user_id\x18\x02 \x02(\t\x12\x12\n\nmessage_id\x18\x03 \x01(\t\"d\n\x11MessageSentStatus\x12\x12\n\x0eSTATUS_SUCCESS\x10\x00\x12\x10\n\x0cSTATUS_ERROR\x10\x01\x12\x0f\n\x0bSTATUS_BUSY\x10\x02\x12\x18\n\x14STATUS_USER_NOTFOUND\x10\x03\"\x93\x01\n\nNewMessage\x12\x12\n\nmessage_id\x18\x01 \x02(\t\x12\x0e\n\x06sender\x18\x02 \x02(\t\x12\r\n\x05group\x18\x03 \x03(\t\x12\x13\n\x0boriginal_id\x18\x04 \x01(\t\x12\x0c\n\x04mime\x18\x05 \x02(\t\x12\x11\n\tencrypted\x18\x06 \x02(\x08\x12\x0f\n\x07\x63ontent\x18\x07 \x02(\x0c\x12\x0b\n\x03url\x18\x08 \x01(\t\"\'\n\x11MessageAckRequest\x12\x12\n\nmessage_id\x18\x01 \x03(\t\"\xbd\x01\n\x12MessageAckResponse\x1a\xa6\x01\n\x05\x45ntry\x12\x12\n\nmessage_id\x18\x01 \x02(\t\x12:\n\x06status\x18\x02 \x02(\x0e\x32*.MessageAckResponse.Entry.MessageAckStatus\"M\n\x10MessageAckStatus\x12\x12\n\x0eSTATUS_SUCCESS\x10\x00\x12\x10\n\x0cSTATUS_ERROR\x10\x01\x12\x13\n\x0fSTATUS_NOTFOUND\x10\x02\x42 \n\x12org.kontalk.clientB\x08ProtocolH\x03')
+  serialized_pb='\n\tc2s.proto\"$\n\x13\x41uthenticateRequest\x12\r\n\x05token\x18\x01 \x02(\t\"%\n\x14\x41uthenticateResponse\x12\r\n\x05valid\x18\x01 \x02(\x08\"U\n\x12MessagePostRequest\x12\x11\n\trecipient\x18\x01 \x03(\t\x12\x0c\n\x04mime\x18\x02 \x01(\t\x12\r\n\x05\x66lags\x18\x03 \x03(\t\x12\x0f\n\x07\x63ontent\x18\x04 \x01(\x0c\"\xa5\x02\n\x13MessagePostResponse\x12/\n\x05\x65ntry\x18\x01 \x03(\x0b\x32 .MessagePostResponse.MessageSent\x1a\xdc\x01\n\x0bMessageSent\x12\x42\n\x06status\x18\x01 \x02(\x0e\x32\x32.MessagePostResponse.MessageSent.MessageSentStatus\x12\x0f\n\x07user_id\x18\x02 \x02(\t\x12\x12\n\nmessage_id\x18\x03 \x01(\t\"d\n\x11MessageSentStatus\x12\x12\n\x0eSTATUS_SUCCESS\x10\x00\x12\x10\n\x0cSTATUS_ERROR\x10\x01\x12\x0f\n\x0bSTATUS_BUSY\x10\x02\x12\x18\n\x14STATUS_USER_NOTFOUND\x10\x03\"\xa2\x01\n\nNewMessage\x12\x12\n\nmessage_id\x18\x01 \x02(\t\x12\x11\n\ttimestamp\x18\x02 \x02(\t\x12\x0e\n\x06sender\x18\x03 \x02(\t\x12\r\n\x05group\x18\x04 \x03(\t\x12\x13\n\x0boriginal_id\x18\x05 \x01(\t\x12\x0c\n\x04mime\x18\x06 \x02(\t\x12\r\n\x05\x66lags\x18\x07 \x03(\t\x12\x0f\n\x07\x63ontent\x18\x08 \x02(\x0c\x12\x0b\n\x03url\x18\t \x01(\t\"\'\n\x11MessageAckRequest\x12\x12\n\nmessage_id\x18\x01 \x03(\t\"\xe7\x01\n\x12MessageAckResponse\x12(\n\x05\x65ntry\x18\x01 \x03(\x0b\x32\x19.MessageAckResponse.Entry\x1a\xa6\x01\n\x05\x45ntry\x12\x12\n\nmessage_id\x18\x01 \x02(\t\x12:\n\x06status\x18\x02 \x02(\x0e\x32*.MessageAckResponse.Entry.MessageAckStatus\"M\n\x10MessageAckStatus\x12\x12\n\x0eSTATUS_SUCCESS\x10\x00\x12\x10\n\x0cSTATUS_ERROR\x10\x01\x12\x13\n\x0fSTATUS_NOTFOUND\x10\x02\"\x85\x02\n\x0eReceiptMessage\x12$\n\x05\x65ntry\x18\x01 \x03(\x0b\x32\x15.ReceiptMessage.Entry\x1a\xcc\x01\n\x05\x45ntry\x12\x12\n\nmessage_id\x18\x01 \x02(\t\x12\x33\n\x06status\x18\x02 \x02(\x0e\x32#.ReceiptMessage.Entry.ReceiptStatus\x12\x11\n\ttimestamp\x18\x03 \x01(\t\"g\n\rReceiptStatus\x12\x12\n\x0eSTATUS_SUCCESS\x10\x00\x12\x10\n\x0cSTATUS_ERROR\x10\x01\x12\x18\n\x14STATUS_USER_NOTFOUND\x10\x02\x12\x16\n\x12STATUS_TTL_EXPIRED\x10\x03\x42 \n\x12org.kontalk.clientB\x08ProtocolH\x03')
 
 
 
-_MESSAGESENT_MESSAGESENTSTATUS = descriptor.EnumDescriptor(
+_MESSAGEPOSTRESPONSE_MESSAGESENT_MESSAGESENTSTATUS = descriptor.EnumDescriptor(
   name='MessageSentStatus',
-  full_name='MessageSent.MessageSentStatus',
+  full_name='MessagePostResponse.MessageSent.MessageSentStatus',
   filename=None,
   file=DESCRIPTOR,
   values=[
@@ -40,8 +40,8 @@ _MESSAGESENT_MESSAGESENTSTATUS = descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=330,
-  serialized_end=430,
+  serialized_start=371,
+  serialized_end=471,
 )
 
 _MESSAGEACKRESPONSE_ENTRY_MESSAGEACKSTATUS = descriptor.EnumDescriptor(
@@ -65,8 +65,37 @@ _MESSAGEACKRESPONSE_ENTRY_MESSAGEACKSTATUS = descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=736,
-  serialized_end=813,
+  serialized_start=834,
+  serialized_end=911,
+)
+
+_RECEIPTMESSAGE_ENTRY_RECEIPTSTATUS = descriptor.EnumDescriptor(
+  name='ReceiptStatus',
+  full_name='ReceiptMessage.Entry.ReceiptStatus',
+  filename=None,
+  file=DESCRIPTOR,
+  values=[
+    descriptor.EnumValueDescriptor(
+      name='STATUS_SUCCESS', index=0, number=0,
+      options=None,
+      type=None),
+    descriptor.EnumValueDescriptor(
+      name='STATUS_ERROR', index=1, number=1,
+      options=None,
+      type=None),
+    descriptor.EnumValueDescriptor(
+      name='STATUS_USER_NOTFOUND', index=2, number=2,
+      options=None,
+      type=None),
+    descriptor.EnumValueDescriptor(
+      name='STATUS_TTL_EXPIRED', index=3, number=3,
+      options=None,
+      type=None),
+  ],
+  containing_type=None,
+  options=None,
+  serialized_start=1072,
+  serialized_end=1175,
 )
 
 
@@ -175,6 +204,48 @@ _MESSAGEPOSTREQUEST = descriptor.Descriptor(
 )
 
 
+_MESSAGEPOSTRESPONSE_MESSAGESENT = descriptor.Descriptor(
+  name='MessageSent',
+  full_name='MessagePostResponse.MessageSent',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    descriptor.FieldDescriptor(
+      name='status', full_name='MessagePostResponse.MessageSent.status', index=0,
+      number=1, type=14, cpp_type=8, label=2,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    descriptor.FieldDescriptor(
+      name='user_id', full_name='MessagePostResponse.MessageSent.user_id', index=1,
+      number=2, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=unicode("", "utf-8"),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    descriptor.FieldDescriptor(
+      name='message_id', full_name='MessagePostResponse.MessageSent.message_id', index=2,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=unicode("", "utf-8"),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+    _MESSAGEPOSTRESPONSE_MESSAGESENT_MESSAGESENTSTATUS,
+  ],
+  options=None,
+  is_extendable=False,
+  extension_ranges=[],
+  serialized_start=251,
+  serialized_end=471,
+)
+
 _MESSAGEPOSTRESPONSE = descriptor.Descriptor(
   name='MessagePostResponse',
   full_name='MessagePostResponse',
@@ -192,57 +263,14 @@ _MESSAGEPOSTRESPONSE = descriptor.Descriptor(
   ],
   extensions=[
   ],
-  nested_types=[],
+  nested_types=[_MESSAGEPOSTRESPONSE_MESSAGESENT, ],
   enum_types=[
   ],
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=177,
-  serialized_end=227,
-)
-
-
-_MESSAGESENT = descriptor.Descriptor(
-  name='MessageSent',
-  full_name='MessageSent',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    descriptor.FieldDescriptor(
-      name='status', full_name='MessageSent.status', index=0,
-      number=1, type=14, cpp_type=8, label=2,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    descriptor.FieldDescriptor(
-      name='user_id', full_name='MessageSent.user_id', index=1,
-      number=2, type=9, cpp_type=9, label=2,
-      has_default_value=False, default_value=unicode("", "utf-8"),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    descriptor.FieldDescriptor(
-      name='message_id', full_name='MessageSent.message_id', index=2,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=unicode("", "utf-8"),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-    _MESSAGESENT_MESSAGESENTSTATUS,
-  ],
-  options=None,
-  is_extendable=False,
-  extension_ranges=[],
-  serialized_start=230,
-  serialized_end=430,
+  serialized_start=178,
+  serialized_end=471,
 )
 
 
@@ -261,50 +289,57 @@ _NEWMESSAGE = descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     descriptor.FieldDescriptor(
-      name='sender', full_name='NewMessage.sender', index=1,
+      name='timestamp', full_name='NewMessage.timestamp', index=1,
       number=2, type=9, cpp_type=9, label=2,
       has_default_value=False, default_value=unicode("", "utf-8"),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     descriptor.FieldDescriptor(
-      name='group', full_name='NewMessage.group', index=2,
-      number=3, type=9, cpp_type=9, label=3,
+      name='sender', full_name='NewMessage.sender', index=2,
+      number=3, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=unicode("", "utf-8"),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    descriptor.FieldDescriptor(
+      name='group', full_name='NewMessage.group', index=3,
+      number=4, type=9, cpp_type=9, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     descriptor.FieldDescriptor(
-      name='original_id', full_name='NewMessage.original_id', index=3,
-      number=4, type=9, cpp_type=9, label=1,
+      name='original_id', full_name='NewMessage.original_id', index=4,
+      number=5, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=unicode("", "utf-8"),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     descriptor.FieldDescriptor(
-      name='mime', full_name='NewMessage.mime', index=4,
-      number=5, type=9, cpp_type=9, label=2,
+      name='mime', full_name='NewMessage.mime', index=5,
+      number=6, type=9, cpp_type=9, label=2,
       has_default_value=False, default_value=unicode("", "utf-8"),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     descriptor.FieldDescriptor(
-      name='encrypted', full_name='NewMessage.encrypted', index=5,
-      number=6, type=8, cpp_type=7, label=2,
-      has_default_value=False, default_value=False,
+      name='flags', full_name='NewMessage.flags', index=6,
+      number=7, type=9, cpp_type=9, label=3,
+      has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     descriptor.FieldDescriptor(
-      name='content', full_name='NewMessage.content', index=6,
-      number=7, type=12, cpp_type=9, label=2,
+      name='content', full_name='NewMessage.content', index=7,
+      number=8, type=12, cpp_type=9, label=2,
       has_default_value=False, default_value="",
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     descriptor.FieldDescriptor(
-      name='url', full_name='NewMessage.url', index=7,
-      number=8, type=9, cpp_type=9, label=1,
+      name='url', full_name='NewMessage.url', index=8,
+      number=9, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=unicode("", "utf-8"),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -318,8 +353,8 @@ _NEWMESSAGE = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=433,
-  serialized_end=580,
+  serialized_start=474,
+  serialized_end=636,
 )
 
 
@@ -346,8 +381,8 @@ _MESSAGEACKREQUEST = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=582,
-  serialized_end=621,
+  serialized_start=638,
+  serialized_end=677,
 )
 
 
@@ -382,8 +417,8 @@ _MESSAGEACKRESPONSE_ENTRY = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=647,
-  serialized_end=813,
+  serialized_start=745,
+  serialized_end=911,
 )
 
 _MESSAGEACKRESPONSE = descriptor.Descriptor(
@@ -393,6 +428,13 @@ _MESSAGEACKRESPONSE = descriptor.Descriptor(
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
+    descriptor.FieldDescriptor(
+      name='entry', full_name='MessageAckResponse.entry', index=0,
+      number=1, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
   ],
   extensions=[
   ],
@@ -402,24 +444,100 @@ _MESSAGEACKRESPONSE = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=624,
-  serialized_end=813,
+  serialized_start=680,
+  serialized_end=911,
 )
 
-_MESSAGEPOSTRESPONSE.fields_by_name['entry'].message_type = _MESSAGESENT
-_MESSAGESENT.fields_by_name['status'].enum_type = _MESSAGESENT_MESSAGESENTSTATUS
-_MESSAGESENT_MESSAGESENTSTATUS.containing_type = _MESSAGESENT;
+
+_RECEIPTMESSAGE_ENTRY = descriptor.Descriptor(
+  name='Entry',
+  full_name='ReceiptMessage.Entry',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    descriptor.FieldDescriptor(
+      name='message_id', full_name='ReceiptMessage.Entry.message_id', index=0,
+      number=1, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=unicode("", "utf-8"),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    descriptor.FieldDescriptor(
+      name='status', full_name='ReceiptMessage.Entry.status', index=1,
+      number=2, type=14, cpp_type=8, label=2,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    descriptor.FieldDescriptor(
+      name='timestamp', full_name='ReceiptMessage.Entry.timestamp', index=2,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=unicode("", "utf-8"),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+    _RECEIPTMESSAGE_ENTRY_RECEIPTSTATUS,
+  ],
+  options=None,
+  is_extendable=False,
+  extension_ranges=[],
+  serialized_start=971,
+  serialized_end=1175,
+)
+
+_RECEIPTMESSAGE = descriptor.Descriptor(
+  name='ReceiptMessage',
+  full_name='ReceiptMessage',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    descriptor.FieldDescriptor(
+      name='entry', full_name='ReceiptMessage.entry', index=0,
+      number=1, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[_RECEIPTMESSAGE_ENTRY, ],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  extension_ranges=[],
+  serialized_start=914,
+  serialized_end=1175,
+)
+
+_MESSAGEPOSTRESPONSE_MESSAGESENT.fields_by_name['status'].enum_type = _MESSAGEPOSTRESPONSE_MESSAGESENT_MESSAGESENTSTATUS
+_MESSAGEPOSTRESPONSE_MESSAGESENT.containing_type = _MESSAGEPOSTRESPONSE;
+_MESSAGEPOSTRESPONSE_MESSAGESENT_MESSAGESENTSTATUS.containing_type = _MESSAGEPOSTRESPONSE_MESSAGESENT;
+_MESSAGEPOSTRESPONSE.fields_by_name['entry'].message_type = _MESSAGEPOSTRESPONSE_MESSAGESENT
 _MESSAGEACKRESPONSE_ENTRY.fields_by_name['status'].enum_type = _MESSAGEACKRESPONSE_ENTRY_MESSAGEACKSTATUS
 _MESSAGEACKRESPONSE_ENTRY.containing_type = _MESSAGEACKRESPONSE;
 _MESSAGEACKRESPONSE_ENTRY_MESSAGEACKSTATUS.containing_type = _MESSAGEACKRESPONSE_ENTRY;
+_MESSAGEACKRESPONSE.fields_by_name['entry'].message_type = _MESSAGEACKRESPONSE_ENTRY
+_RECEIPTMESSAGE_ENTRY.fields_by_name['status'].enum_type = _RECEIPTMESSAGE_ENTRY_RECEIPTSTATUS
+_RECEIPTMESSAGE_ENTRY.containing_type = _RECEIPTMESSAGE;
+_RECEIPTMESSAGE_ENTRY_RECEIPTSTATUS.containing_type = _RECEIPTMESSAGE_ENTRY;
+_RECEIPTMESSAGE.fields_by_name['entry'].message_type = _RECEIPTMESSAGE_ENTRY
 DESCRIPTOR.message_types_by_name['AuthenticateRequest'] = _AUTHENTICATEREQUEST
 DESCRIPTOR.message_types_by_name['AuthenticateResponse'] = _AUTHENTICATERESPONSE
 DESCRIPTOR.message_types_by_name['MessagePostRequest'] = _MESSAGEPOSTREQUEST
 DESCRIPTOR.message_types_by_name['MessagePostResponse'] = _MESSAGEPOSTRESPONSE
-DESCRIPTOR.message_types_by_name['MessageSent'] = _MESSAGESENT
 DESCRIPTOR.message_types_by_name['NewMessage'] = _NEWMESSAGE
 DESCRIPTOR.message_types_by_name['MessageAckRequest'] = _MESSAGEACKREQUEST
 DESCRIPTOR.message_types_by_name['MessageAckResponse'] = _MESSAGEACKRESPONSE
+DESCRIPTOR.message_types_by_name['ReceiptMessage'] = _RECEIPTMESSAGE
 
 class AuthenticateRequest(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
@@ -441,15 +559,15 @@ class MessagePostRequest(message.Message):
 
 class MessagePostResponse(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
+  
+  class MessageSent(message.Message):
+    __metaclass__ = reflection.GeneratedProtocolMessageType
+    DESCRIPTOR = _MESSAGEPOSTRESPONSE_MESSAGESENT
+    
+    # @@protoc_insertion_point(class_scope:MessagePostResponse.MessageSent)
   DESCRIPTOR = _MESSAGEPOSTRESPONSE
   
   # @@protoc_insertion_point(class_scope:MessagePostResponse)
-
-class MessageSent(message.Message):
-  __metaclass__ = reflection.GeneratedProtocolMessageType
-  DESCRIPTOR = _MESSAGESENT
-  
-  # @@protoc_insertion_point(class_scope:MessageSent)
 
 class NewMessage(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
@@ -474,5 +592,17 @@ class MessageAckResponse(message.Message):
   DESCRIPTOR = _MESSAGEACKRESPONSE
   
   # @@protoc_insertion_point(class_scope:MessageAckResponse)
+
+class ReceiptMessage(message.Message):
+  __metaclass__ = reflection.GeneratedProtocolMessageType
+  
+  class Entry(message.Message):
+    __metaclass__ = reflection.GeneratedProtocolMessageType
+    DESCRIPTOR = _RECEIPTMESSAGE_ENTRY
+    
+    # @@protoc_insertion_point(class_scope:ReceiptMessage.Entry)
+  DESCRIPTOR = _RECEIPTMESSAGE
+  
+  # @@protoc_insertion_point(class_scope:ReceiptMessage)
 
 # @@protoc_insertion_point(module_scope)
