@@ -11,7 +11,7 @@ from google.protobuf import descriptor_pb2
 DESCRIPTOR = descriptor.FileDescriptor(
   name='txprotobuf.proto',
   package='',
-  serialized_pb='\n\x10txprotobuf.proto\":\n\x0c\x42oxContainer\x12\x0c\n\x04name\x18\x01 \x02(\t\x12\r\n\x05value\x18\x02 \x02(\x0c\x12\r\n\x05tx_id\x18\x03 \x01(\t')
+  serialized_pb='\n\x10txprotobuf.proto\":\n\x0c\x42oxContainer\x12\x0c\n\x04name\x18\x01 \x02(\t\x12\r\n\x05value\x18\x02 \x02(\x0c\x12\r\n\x05tx_id\x18\x03 \x01(\tB#\n\x12org.kontalk.clientB\x0b\x42oxProtocolH\x03')
 
 
 
