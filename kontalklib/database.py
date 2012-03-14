@@ -39,6 +39,11 @@ def connect(host, port, user, passwd, dbname, servercfg):
     db = MySQLdb.connect(host=host, port=port, user=user, passwd=passwd, db=dbname)
     return MessengerDb(db, servercfg)
 
+def validations(mdb):
+    return ValidationsDb(mdb._db, mdb._config)
+
+# TODO other db instance creator helpers
+
 
 class MessengerDb:
     '''Generic interface to messenger database.'''
@@ -47,25 +52,12 @@ class MessengerDb:
         self._db = db
         self._db.autocommit(True)
 
-    def servers(self):
-        '''Returns a reference to a new ServerDb instance.'''
-        return ServersDb(self._db, self._config)
-
-    def usercache(self):
-        '''Returns a reference to a new UsercacheDb instance.'''
-        return UsercacheDb(self._db, self._config)
-
-    def messages(self):
-        '''Returns a reference to a new MessagesDb instance.'''
-        return MessagesDb(self._db, self._config)
-
-    def validations(self):
-        '''Returns a reference to a new ValidationsDb instance.'''
-        return ValidationsDb(self._db, self._config)
-
-    def attachments(self):
-        '''Returns a reference to a new AttachmentsDb instance.'''
-        return AttachmentsDb(self._db, self._config)
+        """
+        self.servers = ServersDb(self._db, self._config)
+        self.usercache = UsercacheDb(self._db, self._config)
+        self.messages = MessagesDb(self._db, self._config)
+        self.attachments = AttachmentsDb(self._db, self._config)
+        """
 
     def execute_update(self, query, args = None):
         c = self._db.cursor()
