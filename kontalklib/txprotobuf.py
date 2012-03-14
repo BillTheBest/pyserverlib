@@ -44,20 +44,27 @@ class Protocol(protocol.Protocol):
         #print "length-before:", len(self._buf)
         # no data received yet
         if self._length < 0:
-            #print "parsing length..."
+            print "parsing length..."
             length_val = decoder._DecodeVarint32(self._buf, 0)
-            #print length_val
+            print length_val
             length = length_val[0]
             length_len = length_val[1]
+
+            # data is too big - drop buffer
+            if length >= self.MAX_LENGTH:
+                self._buf = ''
+                self._length = -1
+                return
+
             self._length = length
             # remove length's length from buffer and continue reading
             self._buf = self._buf[length_len:]
-            #print "length-after:", len(self._buf)
+            print "length-after:", len(self._buf)
 
         if len(self._buf) >= self._length:
-            #print "length %d reached (%d)" % (self._length, len(self._buf))
+            print "length %d reached (%d)" % (self._length, len(self._buf))
             out = self._buf[:self._length:]
-            #print "out data %d" % len(out)
+            print "out data %d" % len(out)
             self._buf = self._buf[self._length:]
             self._length = -1
             self.stringReceived(out)

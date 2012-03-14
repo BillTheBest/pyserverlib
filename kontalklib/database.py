@@ -42,6 +42,9 @@ def connect(host, port, user, passwd, dbname, servercfg):
 def validations(mdb):
     return ValidationsDb(mdb._db, mdb._config)
 
+def servers(mdb):
+    return ServersDb(mdb._db, mdb._config)
+
 # TODO other db instance creator helpers
 
 
