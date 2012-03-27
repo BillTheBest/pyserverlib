@@ -40,7 +40,8 @@ class Protocol(protocol.Protocol):
         self._modules = modules
 
     def dataReceived(self, data):
-        self._buf += data
+        if data:
+            self._buf += data
         #print "length-before:", len(self._buf)
         # no data received yet
         if self._length < 0:
@@ -65,11 +66,15 @@ class Protocol(protocol.Protocol):
             #print "length %d reached (%d)" % (self._length, len(self._buf))
             out = self._buf[:self._length:]
             #print "out data %d" % len(out)
+            self.stringReceived(out)
+            # don't forget the next pack :)
             self._buf = self._buf[self._length:]
             self._length = -1
-            self.stringReceived(out)
+            if self._buf:
+                self.dataReceived(None)
 
     def sendString(self, string):
+        #print "sending %d bytes" % len(string)
         out = StringIO()
         encoder._EncodeVarint(out.write, len(string))
         out.write(string)
@@ -85,6 +90,8 @@ class Protocol(protocol.Protocol):
                 out.ParseFromString(box.value)
             self.boxReceived(out, box.tx_id)
 
+    """
+    FIXME this might not work
     def sendBoxes(self, datas, tx_id = None):
         # generate random tx id if not given
         if not tx_id:
@@ -97,6 +104,7 @@ class Protocol(protocol.Protocol):
             box.tx_id = tx_id
             buf += box.SerializeToString()
         self.sendString(buf)
+    """
 
     def sendBox(self, data, tx_id = None):
         box = BoxContainer()
