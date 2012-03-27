@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 '''Token functions.'''
 '''
-  Kontalk Android client
+  Kontalk pyserver2
   Copyright (C) 2011 Kontalk Devteam <devteam@kontalk.org>
 
  This program is free software: you can redistribute it and/or modify
@@ -18,7 +18,6 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
 
-import cherrypy
 import utils
 
 # pyme
@@ -89,14 +88,3 @@ def verify_user_token(token, serversdb, fp = None):
                 return userid
 
     return None
-
-
-def _parse_authorization(params):
-    data = params.split('=', 1)
-    db = utils.db(cherrypy.request.app.config)
-    return {'userid' : verify_user_token(data[1], db.servers(),
-        cherrypy.request.app.config['server']['fingerprint'])}
-
-def parse_authorization(header):
-    cherrypy.lib.httpauth.AUTH_SCHEMES['kontalktoken'] = _parse_authorization
-    return cherrypy.lib.httpauth.parseAuthorization(header)
