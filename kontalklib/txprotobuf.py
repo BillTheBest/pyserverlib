@@ -35,36 +35,55 @@ class Protocol(protocol.Protocol):
     _buf = ''
     # length of future-coming data
     _length = -1
+    # overflow length
+    _over_length = -1
 
     def __init__(self, modules):
         self._modules = modules
 
     def dataReceived(self, data):
+        # ignoring data
+        if self._over_length >= 0:
+            if data:
+                #print "got %d bytes of extra data" % len(data)
+                self._over_length += len(data)
+            # ignored data reached, keep the rest
+            #print "ignoring %d/%d bytes" % (self._over_length, self._length)
+            if self._over_length >= self._length:
+                diff = (self._length - self._over_length)
+                self._buf = data[diff:] if diff > 0 else ''
+                # cancel incoming buffer since we already appended it
+                data = None
+                self._over_length = -1
+                self._length = -1
+                #print "ignore limit reached - keeping %d bytes" % len(self._buf)
+            else:
+                # do not continue with parsing
+                return
+
         if data:
             self._buf += data
         #print "length-before:", len(self._buf)
         # no data received yet
-        if self._length < 0:
+        if self._length < 0 and self._buf:
             #print "parsing length..."
-            length_val = decoder._DecodeVarint32(self._buf, 0)
-            #print length_val
-            length = length_val[0]
-            length_len = length_val[1]
-
-            # data is too big - drop buffer
-            if length >= self.MAX_LENGTH:
-                self._buf = ''
-                self._length = -1
-                return
-
+            length, length_len = decoder._DecodeVarint32(self._buf, 0)
+            #print [length, length_len]
             self._length = length
             # remove length's length from buffer and continue reading
             self._buf = self._buf[length_len:]
             #print "length-after:", len(self._buf)
 
-        if len(self._buf) >= self._length:
+            # data is too big - drop buffer and ignore the rest
+            if length >= self.MAX_LENGTH:
+                print "too much data - ignoring"
+                self._over_length = len(self._buf)
+                self._buf = ''
+                return
+
+        if self._length > 0 and len(self._buf) >= self._length and self._over_length < 0:
             #print "length %d reached (%d)" % (self._length, len(self._buf))
-            out = self._buf[:self._length:]
+            out = self._buf[:self._length]
             #print "out data %d" % len(out)
             self.stringReceived(out)
             # don't forget the next pack :)
