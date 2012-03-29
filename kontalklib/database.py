@@ -69,13 +69,6 @@ class MessengerDb:
         self._db = db
         self._db.autocommit(True)
 
-        """
-        self.servers = ServersDb(self._db, self._config)
-        self.usercache = UsercacheDb(self._db, self._config)
-        self.messages = MessagesDb(self._db, self._config)
-        self.attachments = AttachmentsDb(self._db, self._config)
-        """
-
     def execute_update(self, query, args = None):
         c = self._db.cursor()
         n = c.execute(query, args)

@@ -141,7 +141,7 @@ message UserLookupResponse {
         required string user_id = 1;
         optional uint64 timestamp = 2;
         optional string status = 3;
-        // difference between timestamp and local server time
+        // difference between timestamp and local server time (0 means online)
         optional uint64 timediff = 4;
     }
     repeated Entry entry = 1;
