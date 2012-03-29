@@ -162,6 +162,15 @@ def touch(fname, create = True):
         elif create:
             open(fname, 'w').close()
 
+def split_userid(userid):
+    return userid[:USERID_LENGTH], userid[USERID_LENGTH:]
+
+def md5sum(filename):
+    md5 = hashlib.md5()
+    with open(filename,'rb') as f:
+        for chunk in iter(lambda: f.read(128*md5.block_size), ''):
+            md5.update(chunk)
+    return md5.hexdigest()
 
 
 ## {{{ http://code.activestate.com/recipes/576642/ (r10)

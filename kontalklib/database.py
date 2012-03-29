@@ -18,7 +18,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
 
-import time
+import time, datetime
 import logging as log
 import MySQLdb
 
@@ -45,7 +45,21 @@ def validations(mdb):
 def servers(mdb):
     return ServersDb(mdb._db, mdb._config)
 
+def messages(mdb):
+    return MessagesDb(mdb._db, mdb._config)
+
+def usercache(mdb):
+    return UsercacheDb(mdb._db, mdb._config)
+
+def attachments(mdb):
+    return AttachmentsDb(mdb._db, mdb._config)
+
 # TODO other db instance creator helpers
+
+
+def format_timestamp(timestamp):
+    ds = datetime.datetime.fromtimestamp(timestamp)
+    return ds.strftime('%Y-%m-%d %H:%M:%S')
 
 
 class MessengerDb:
@@ -268,7 +282,7 @@ class MessagesDb(MessengerDb):
     def delete(self, msgid):
         return self.execute_update('DELETE FROM messages WHERE id = %s', [ msgid ])
 
-    def insert(self, id, sender, recipient, group, mime, content, encrypted, filename, ttl, orig_id = None):
+    def insert(self, id, timestamp, sender, recipient, group, mime, content, encrypted, filename, ttl, need_ack, orig_id = None):
         if not id:
             id = self.generate_id()
 
@@ -277,6 +291,7 @@ class MessagesDb(MessengerDb):
         args = [
             id,
             orig_id,
+            timestamp,
             sender,
             recipient,
             group,
@@ -284,10 +299,11 @@ class MessagesDb(MessengerDb):
             content,
             encrypted,
             filename,
-            ttl
+            ttl,
+            need_ack
         ]
 
-        if self.execute_update('INSERT INTO messages VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', args):
+        if self.execute_update('INSERT INTO messages VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', args):
             return id
 
         return False
@@ -295,6 +311,7 @@ class MessagesDb(MessengerDb):
     def insert2(self, msg):
         return self.insert(
             utils.dict_get(msg, 'id'),
+            utils.dict_get(msg, 'timestamp'),
             utils.dict_get(msg, 'sender'),
             utils.dict_get(msg, 'recipient'),
             utils.dict_get_none(msg, 'group', None),
@@ -303,6 +320,7 @@ class MessagesDb(MessengerDb):
             utils.dict_get_none(msg, 'encrypted', False),
             utils.dict_get(msg, 'filename'),
             utils.dict_get(msg, 'ttl'),
+            utils.dict_get(msg, 'need_ack'),
             utils.dict_get(msg, 'orig_id')
         )
 
@@ -370,17 +388,23 @@ class AttachmentsDb(MessengerDb):
         '''Retrieves an attachment entry, optionally filtering by user id.'''
         query = 'SELECT * FROM attachments WHERE filename = %s'
         args = [ filename ]
-        if userid:
+        if userid or userid == '':
             query += ' AND userid = %s'
             args.append(userid)
 
         return self.get_row(query, args)
 
-    def insert(self, userid, filename, mime):
+    def insert(self, userid, filename, mime, md5sum):
         '''Inserts a new attachments entry.'''
-        return self.execute_update('INSERT INTO attachments VALUES(%s, %s, %s)',
-            (userid, filename, mime))
+        return self.execute_update('INSERT INTO attachments VALUES(%s, %s, %s, %s)',
+            (userid, filename, mime, md5sum))
 
-    def delete(self, filename):
+    def delete(self, filename, userid = False):
         '''Deletes an attachment entry.'''
-        return self.execute_update('DELETE FROM attachments WHERE filename = %s', (filename, ))
+        query = 'DELETE FROM attachments WHERE filename = %s'
+        args = [ filename ]
+        if userid or userid == '':
+            query += ' AND userid = %s'
+            args.append(userid)
+
+        return self.execute_update(query, args)
