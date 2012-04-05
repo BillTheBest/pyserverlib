@@ -383,7 +383,7 @@ class AttachmentsDb(MessengerDb):
         args = [ filename ]
         if userid or userid == '':
             query += ' AND userid = %s'
-            args.append(userid)
+            args.append(userid[:utils.USERID_LENGTH])
 
         return self.get_row(query, args)
 
