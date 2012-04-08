@@ -21,7 +21,11 @@
 USERID_LENGTH = 40
 USERID_LENGTH_RESOURCE = 48
 
+# validation code length
 VALIDATION_CODE_LENGTH = 6
+
+# max length of user status message
+STATUS_MESSAGE_MAX_LENGTH = 140
 
 CHARSBOX_AZN_CASEINS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890'
 CHARSBOX_AZN_LOWERCASE = 'abcdefghijklmnopqrstuvwxyz1234567890'
