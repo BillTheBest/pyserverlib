@@ -160,8 +160,10 @@ class UsercacheDb(MessengerDb):
         q = 'DELETE FROM usercache WHERE UNIX_TIMESTAMP() > (UNIX_TIMESTAMP(timestamp) + %d)' % (self._config['usercache.expire'])
         return self.execute_update(q)
 
-    def update(self, userid, timestamp = None, google_regid = None):
+    def update(self, userid, timestamp = None, **kwargs):
         args = { 'userid' : userid }
+        cols = ['userid', 'timestamp']
+        fields = ''
 
         if timestamp:
             ts_str = '%(timestamp)s'
@@ -169,12 +171,29 @@ class UsercacheDb(MessengerDb):
         else:
             ts_str = 'sysdate()'
 
-        q = 'INSERT INTO usercache (userid, timestamp) VALUES (%%(userid)s, %s) ON DUPLICATE KEY UPDATE timestamp = %s' % (ts_str, ts_str)
-        return self.execute_update(q, args)
+        def add_field(args, cols, data, name):
+            if data != None and len(data) == 0:
+                data = None
+            args[name] = data
+            cols.append(name)
+            return ', %%(%s)s' % name
 
-    def update_field(self, userid, field, value):
-        q = 'UPDATE usercache SET %s = %%s WHERE userid = %%s' % (field)
-        return self.execute_update(q, (value, userid))
+        if 'status' in kwargs:
+            fields += add_field(args, cols, kwargs['status'], 'status')
+        if 'google_registrationid' in kwargs:
+            fields += add_field(args, cols, kwargs['google_registrationid'], 'google_registrationid')
+
+        fmt = [ ts_str, ts_str]
+        q = 'INSERT INTO usercache (%s) VALUES (%%(userid)s, %s%s)' % (', '.join(cols), ts_str, fields)
+        #log.debug('usercache(%s): %s' % (userid, q))
+        try:
+            return self.execute_update(q, args)
+        except:
+            fs = [ x + ' = %%(%s)s' % (x) for x in cols[2:] ]
+            fs.insert(0, 'timestamp = ' + ts_str)
+            q = 'UPDATE usercache SET %s WHERE userid = %%(userid)s' % ', '.join(fs)
+            #log.debug('usercache(%s): %s' % (userid, q))
+            return self.execute_update(q, args)
 
     def _entry_changed(self, old, new):
         return (
@@ -296,7 +315,7 @@ class MessagesDb(MessengerDb):
             need_ack
         ]
 
-        if self.execute_update('INSERT INTO messages VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', args):
+        if self.execute_update('REPLACE INTO messages VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', args):
             return id
 
         return False
