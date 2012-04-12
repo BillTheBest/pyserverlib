@@ -36,6 +36,7 @@ def connect_config(servercfg):
     )
 
 def connect(host, port, user, passwd, dbname, servercfg):
+    log.debug("connecting to database %s on %s@%s" % (dbname, user, host))
     db = MySQLdb.connect(host=host, port=port, user=user, passwd=passwd, db=dbname)
     return MessengerDb(db, servercfg)
 
