@@ -58,8 +58,7 @@ def attachments(mdb):
 # TODO other db instance creator helpers
 
 
-def format_timestamp(timestamp):
-    ds = datetime.datetime.fromtimestamp(timestamp)
+def format_timestamp(ds):
     return ds.strftime('%Y-%m-%d %H:%M:%S')
 
 
