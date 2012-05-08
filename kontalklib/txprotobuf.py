@@ -134,6 +134,7 @@ class Protocol(protocol.Protocol):
             tx_id = utils.rand_str(8)
         box.tx_id = tx_id
         self.sendString(box.SerializeToString())
+        return tx_id
 
     def boxReceived(self, data, tx_id = None):
         raise NotImplementedError
