@@ -257,6 +257,15 @@ class MessagesDb(MessengerDb):
             self.resolve_groups(rs)
         return rs
 
+    def need_notification(self, resolve_groups = False):
+        '''Returns messages which need to be push notified.'''
+        q = 'SELECT SUBSTR(recipient, 1,' + str(utils.USERID_LENGTH) + ') recipient, COUNT(*) num ' + \
+            'FROM messages GROUP BY SUBSTR(recipient, 1,' + str(utils.USERID_LENGTH) + ')'
+        rs = self.get_rows(q)
+        if resolve_groups:
+            self.resolve_groups(rs)
+        return rs
+
     def pending(self, resolve_groups = False):
         '''Returns messages which need to be processed by the Postoffice.'''
         q = 'SELECT * FROM messages WHERE LENGTH(recipient) = %d' % \
@@ -267,7 +276,7 @@ class MessagesDb(MessengerDb):
         return rs
 
     def incoming(self, userid, resolve_groups = False):
-        '''Retrieves the list of incoming message for a user.'''
+        '''Retrieves the list of incoming messages for a user.'''
         rs = self.get_rows('SELECT * FROM messages WHERE recipient = %(userid)s', { 'userid' : userid })
         if resolve_groups:
             self.resolve_groups(rs)
