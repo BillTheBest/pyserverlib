@@ -268,7 +268,7 @@ class MessagesDb(MessengerDb):
 
     def pending(self, resolve_groups = False):
         '''Returns messages which need to be processed by the Postoffice.'''
-        q = 'SELECT * FROM messages WHERE LENGTH(recipient) = %d' % \
+        q = 'SELECT * FROM messages WHERE LENGTH(recipient) = %d ORDER BY timestamp' % \
             (utils.USERID_LENGTH)
         rs = self.get_rows(q)
         if resolve_groups:
@@ -277,7 +277,7 @@ class MessagesDb(MessengerDb):
 
     def incoming(self, userid, resolve_groups = False):
         '''Retrieves the list of incoming messages for a user.'''
-        rs = self.get_rows('SELECT * FROM messages WHERE recipient = %(userid)s', { 'userid' : userid })
+        rs = self.get_rows('SELECT * FROM messages WHERE recipient = %(userid)s ORDER BY timestamp', { 'userid' : userid })
         if resolve_groups:
             self.resolve_groups(rs)
         return rs
