@@ -238,7 +238,7 @@ class MessagesDb(MessengerDb):
 
     def get_multi(self, orig_id, resolve_group = False):
         '''Retrives multiple messages by orig_id.'''
-        q = 'SELECT * FROM messages WHERE orig_id = %s'
+        q = 'SELECT * FROM messages WHERE orig_id = %s ORDER BY timestamp'
         rs = self.get_rows(q, (orig_id, ))
         if resolve_groups:
             self.resolve_groups(rs)
@@ -251,7 +251,7 @@ class MessagesDb(MessengerDb):
 
     def generics(self, resolve_groups = False):
         '''Returns messages with generic recipient.'''
-        q = 'SELECT * FROM messages WHERE LENGTH(recipient) = ' + str(utils.USERID_LENGTH)
+        q = 'SELECT * FROM messages WHERE LENGTH(recipient) = ' + str(utils.USERID_LENGTH) + ' ORDER BY timestamp'
         rs = self.get_rows(q)
         if resolve_groups:
             self.resolve_groups(rs)
