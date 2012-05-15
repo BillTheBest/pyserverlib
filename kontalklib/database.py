@@ -390,7 +390,7 @@ class ValidationsDb(MessengerDb):
     def update(self, userid, code = False):
         '''Add/replace a validation record.'''
         if not code:
-            code = utils.rand_str(utils.VALIDATION_CODE_LENGTH, utils.CHARSBOX_AZN_UPPERCASE)
+            code = utils.rand_str(utils.VALIDATION_CODE_LENGTH, utils.CHARSBOX_NUMBERS)
         fields = (userid, code)
 
         return (self.execute_update(
