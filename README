@@ -1,2 +1,1 @@
-This Python library contains common code used by both the Python server and the
-Postoffice daemon.
+This Python library contains code used by the Python server.

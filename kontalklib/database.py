@@ -20,7 +20,7 @@
 
 import time, datetime
 import logging as log
-import MySQLdb
+import oursql
 
 import utils
 
@@ -37,7 +37,7 @@ def connect_config(servercfg):
 
 def connect(host, port, user, passwd, dbname, servercfg):
     log.debug("connecting to database %s on %s@%s" % (dbname, user, host))
-    db = MySQLdb.connect(host=host, port=port, user=user, passwd=passwd, db=dbname)
+    db = oursql.connect(host=host, port=port, user=user, passwd=passwd, db=dbname)
     return MessengerDb(db, servercfg)
 
 def validations(mdb):
@@ -67,7 +67,6 @@ class MessengerDb:
     def __init__(self, db, config):
         self._config = config
         self._db = db
-        self._db.autocommit(True)
 
     def execute_update(self, query, args = None):
         c = self._db.cursor()
@@ -76,7 +75,7 @@ class MessengerDb:
         return n
 
     def execute_query(self, query, args = None):
-        c = self._db.cursor(cursorclass=MySQLdb.cursors.DictCursor)
+        c = self._db.cursor(oursql.DictCursor)
         c.execute(query, args)
         return c
 
@@ -108,7 +107,7 @@ class ServersDb(MessengerDb):
         MessengerDb.__init__(self, db, config)
 
     def get_address(self, fingerprint):
-        r = self.get_row('SELECT address FROM servers WHERE fingerprint = %s', (fingerprint, ))
+        r = self.get_row('SELECT address FROM servers WHERE fingerprint = ?', (fingerprint, ))
         if r:
             return r['address']
 
@@ -122,7 +121,7 @@ class ServersDb(MessengerDb):
     def get_list(self, address_only = False, include_me = False):
         if not include_me:
             args = [ self._config['fingerprint'] ]
-            extra = ' WHERE UPPER(fingerprint) <> UPPER(%s)'
+            extra = ' WHERE UPPER(fingerprint) <> UPPER(?)'
         else:
             args = None
             extra = ''
@@ -144,54 +143,52 @@ class UsercacheDb(MessengerDb):
     def get(self, userid, exact):
         q = 'SELECT * FROM usercache WHERE userid '
         if exact:
-            q += '= %s'
+            q += '= ?'
             args = [ userid ]
         else:
-            q += 'LIKE %s'
+            q += 'LIKE ?'
             args = [ userid + '%' ]
 
         return self.get_row(q + ' ORDER BY timestamp DESC', args)
 
     def get_generic(self, userid):
-        q = 'SELECT * FROM usercache WHERE SUBSTR(userid, 1, ' + str(utils.USERID_LENGTH) + ') = %s ORDER BY timestamp DESC'
-        return self.get_rows(q, [ userid ])
+        q = 'SELECT * FROM usercache WHERE SUBSTR(userid, 1, ' + str(utils.USERID_LENGTH) + ') = ? ORDER BY timestamp DESC'
+        return self.get_rows(q, (userid, ))
 
     def purge_old_entries(self):
         q = 'DELETE FROM usercache WHERE UNIX_TIMESTAMP() > (UNIX_TIMESTAMP(timestamp) + %d)' % (self._config['usercache.expire'])
         return self.execute_update(q)
 
     def update(self, userid, timestamp = None, **kwargs):
-        args = { 'userid' : userid }
+        args = [ userid ]
         cols = ['userid', 'timestamp']
-        fields = ''
 
         if timestamp:
-            ts_str = '%(timestamp)s'
-            args['timestamp'] = time.strftime('%Y-%m-%d %H:%M:%S', localtime(timestamp))
+            ts_str = '?'
+            args.append(time.strftime('%Y-%m-%d %H:%M:%S', localtime(timestamp)))
         else:
             ts_str = 'sysdate()'
 
         def add_field(args, cols, data, name):
             if data != None and len(data) == 0:
                 data = None
-            args[name] = data
+            args.append(data)
             cols.append(name)
-            return ', %%(%s)s' % name
 
         if 'status' in kwargs:
-            fields += add_field(args, cols, kwargs['status'], 'status')
+            add_field(args, cols, kwargs['status'], 'status')
         if 'google_registrationid' in kwargs:
-            fields += add_field(args, cols, kwargs['google_registrationid'], 'google_registrationid')
+            add_field(args, cols, kwargs['google_registrationid'], 'google_registrationid')
 
         fmt = [ ts_str, ts_str]
-        q = 'INSERT INTO usercache (%s) VALUES (%%(userid)s, %s%s)' % (', '.join(cols), ts_str, fields)
+        q = 'INSERT INTO usercache (%s) VALUES (?, %s%s)' % (', '.join(cols), ts_str, ',?' * (len(args) - 1))
         #log.debug('usercache(%s): %s' % (userid, q))
         try:
             return self.execute_update(q, args)
         except:
-            fs = [ x + ' = %%(%s)s' % (x) for x in cols[2:] ]
+            fs = [ x + ' = ?' for x in cols[2:] ]
             fs.insert(0, 'timestamp = ' + ts_str)
-            q = 'UPDATE usercache SET %s WHERE userid = %%(userid)s' % ', '.join(fs)
+            q = 'UPDATE usercache SET %s WHERE userid = ?' % ', '.join(fs)
             #log.debug('usercache(%s): %s' % (userid, q))
             return self.execute_update(q, args)
 
@@ -226,19 +223,19 @@ class MessagesDb(MessengerDb):
 
     def get(self, msgid, resolve_group = False):
         '''Retrives a message.'''
-        r = self.get_row('SELECT * FROM messages WHERE id = %s', (msgid, ))
+        r = self.get_row('SELECT * FROM messages WHERE id = ?', (msgid, ))
         if r:
             g = r['group']
             if resolve_group and g:
                 r['group'] = self.get_rows_list(
-                    'SELECT recipient FROM messages WHERE `group` = %s AND `recipient` <> %s',
+                    'SELECT recipient FROM messages WHERE `group` = ? AND `recipient` <> ?',
                     (g, r['recipient']))
 
         return r
 
     def get_multi(self, orig_id, resolve_group = False):
         '''Retrives multiple messages by orig_id.'''
-        q = 'SELECT * FROM messages WHERE orig_id = %s ORDER BY timestamp'
+        q = 'SELECT * FROM messages WHERE orig_id = ? ORDER BY timestamp'
         rs = self.get_rows(q, (orig_id, ))
         if resolve_groups:
             self.resolve_groups(rs)
@@ -251,7 +248,7 @@ class MessagesDb(MessengerDb):
 
     def generics(self, resolve_groups = False):
         '''Returns messages with generic recipient.'''
-        q = 'SELECT * FROM messages WHERE LENGTH(recipient) = ' + str(utils.USERID_LENGTH) + ' ORDER BY timestamp'
+        q = 'SELECT * FROM messages WHERE LENGTH(recipient) = %d ORDER BY timestamp' % (utils.USERID_LENGTH)
         rs = self.get_rows(q)
         if resolve_groups:
             self.resolve_groups(rs)
@@ -259,8 +256,9 @@ class MessagesDb(MessengerDb):
 
     def need_notification(self, resolve_groups = False):
         '''Returns messages which need to be push notified.'''
-        q = 'SELECT SUBSTR(recipient, 1,' + str(utils.USERID_LENGTH) + ') recipient, COUNT(*) num ' + \
-            'FROM messages GROUP BY SUBSTR(recipient, 1,' + str(utils.USERID_LENGTH) + ')'
+        q = 'SELECT SUBSTR(recipient, 1, %d) recipient, COUNT(*) num ' + \
+            'FROM messages GROUP BY SUBSTR(recipient, 1, %d)' % \
+            (utils.USERID_LENGTH, utils.USERID_LENGTH)
         rs = self.get_rows(q)
         if resolve_groups:
             self.resolve_groups(rs)
@@ -277,7 +275,7 @@ class MessagesDb(MessengerDb):
 
     def incoming(self, userid, resolve_groups = False):
         '''Retrieves the list of incoming messages for a user.'''
-        rs = self.get_rows('SELECT * FROM messages WHERE recipient = %(userid)s ORDER BY timestamp', { 'userid' : userid })
+        rs = self.get_rows('SELECT * FROM messages WHERE recipient = ? ORDER BY timestamp', (userid, ))
         if resolve_groups:
             self.resolve_groups(rs)
         return rs
@@ -295,18 +293,15 @@ class MessagesDb(MessengerDb):
             g = r['group']
             if g:
                 rs[i]['group'] = self.get_rows_list(
-                    'SELECT recipient FROM messages WHERE `group` = %s AND `recipient` <> %s',
+                    'SELECT recipient FROM messages WHERE `group` = ? AND `recipient` <> ?',
                     [g, r['recipient']])
 
         return rs
 
     def delete(self, msgid):
-        return self.execute_update('DELETE FROM messages WHERE id = %s', [ msgid ])
+        return self.execute_update('DELETE FROM messages WHERE id = ?', [ msgid ])
 
     def insert(self, id, timestamp, sender, recipient, group, mime, content, encrypted, filename, ttl, need_ack, orig_id = None):
-        if not id:
-            id = self.generate_id()
-
         log.debug('using id: %s' % (id))
 
         args = [
@@ -317,15 +312,15 @@ class MessagesDb(MessengerDb):
             recipient,
             group,
             mime,
-            content,
+            buffer(content),
             encrypted,
             filename,
             ttl,
             need_ack
         ]
 
-        if self.execute_update('REPLACE INTO messages VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', args):
-            return id
+        if self.execute_update('REPLACE INTO messages VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', args):
+            return True
 
         return False
 
@@ -347,24 +342,10 @@ class MessagesDb(MessengerDb):
 
     def ttl_dec(self, msgid, count = 1):
         # FIXME there is some problem with formatting 'count' here...
-        return self.execute_update("UPDATE messages SET ttl = ttl - " +
-            str(count) + " WHERE id = %s", (msgid, ))
+        return self.execute_update("UPDATE messages SET ttl = ttl - %d WHERE id = ?" % (count), (msgid, ))
 
     def ttl_half(self, msgid):
-        return self.execute_update("UPDATE messages SET ttl = ttl / 2 WHERE id = %s", (msgid,))
-
-    def generate_id(self):
-        # TODO %z is deprecated
-        return self._config['fingerprint'] + time.strftime('%Y%m%d%H%M%S%z') + utils.rand_str(5, utils.CHARSBOX_AZN_UPPERCASE)
-
-    def message_receipt(self, msgid, status, sender = None, recipient = None):
-        return {
-            'sender' : sender,
-            'recipient' : recipient,
-            'content' : '<r><i>%s</i><e>%d</e></r>' % (escape(msgid), status),
-            'mime' : 'r',
-            'ttl' : self._config['ttl.receipt']
-        }
+        return self.execute_update("UPDATE messages SET ttl = ttl / 2 WHERE id = ?", (msgid,))
 
 
 class ValidationsDb(MessengerDb):
@@ -375,17 +356,17 @@ class ValidationsDb(MessengerDb):
 
     def get_code(self, userid):
         '''Retrieves a validation code from a userid.'''
-        r = self.get_row('SELECT code FROM validations WHERE userid = %s', (userid, ))
+        r = self.get_row('SELECT code FROM validations WHERE userid = ?', (userid, ))
         return r['code'] if r else False
 
     def get_userid(self, code):
         '''Retrieves the userid from a validation code.'''
-        r = self.get_row('SELECT userid FROM validations WHERE code = %s', (code, ))
+        r = self.get_row('SELECT userid FROM validations WHERE code = ?', (code, ))
         return r['userid'] if r else False
 
     def delete(self, code):
         '''Deletes a validation code record.'''
-        return self.execute_update('DELETE FROM validations WHERE code = %s', (code, ))
+        return self.execute_update('DELETE FROM validations WHERE code = ?', (code, ))
 
     def update(self, userid, code = False):
         '''Add/replace a validation record.'''
@@ -394,7 +375,7 @@ class ValidationsDb(MessengerDb):
         fields = (userid, code)
 
         return (self.execute_update(
-            'REPLACE INTO validations VALUES (%s, %s)', fields),
+            'REPLACE INTO validations VALUES (?, ?)', fields),
             code
         )
 
@@ -407,25 +388,25 @@ class AttachmentsDb(MessengerDb):
 
     def get(self, filename, userid = False):
         '''Retrieves an attachment entry, optionally filtering by user id.'''
-        query = 'SELECT * FROM attachments WHERE filename = %s'
+        query = 'SELECT * FROM attachments WHERE filename = ?'
         args = [ filename ]
         if userid or userid == '':
-            query += ' AND userid = %s'
+            query += ' AND userid = ?'
             args.append(userid[:utils.USERID_LENGTH])
 
         return self.get_row(query, args)
 
     def insert(self, userid, filename, mime, md5sum):
         '''Inserts a new attachments entry.'''
-        return self.execute_update('INSERT INTO attachments VALUES(%s, %s, %s, %s)',
+        return self.execute_update('INSERT INTO attachments VALUES(?, ?, ?, ?)',
             (userid, filename, mime, md5sum))
 
     def delete(self, filename, userid = False):
         '''Deletes an attachment entry.'''
-        query = 'DELETE FROM attachments WHERE filename = %s'
+        query = 'DELETE FROM attachments WHERE filename = ?'
         args = [ filename ]
         if userid or userid == '':
-            query += ' AND userid = %s'
+            query += ' AND userid = ?'
             args.append(userid)
 
         return self.execute_update(query, args)
