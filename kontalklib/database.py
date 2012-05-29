@@ -68,30 +68,30 @@ class MessengerDb:
         self._config = config
         self._db = db
 
-    def execute_update(self, query, args = None):
+    def execute_update(self, query, args = ()):
         c = self._db.cursor()
         n = c.execute(query, args)
         c.close()
         return n
 
-    def execute_query(self, query, args = None):
+    def execute_query(self, query, args = ()):
         c = self._db.cursor(oursql.DictCursor)
         c.execute(query, args)
         return c
 
-    def get_row(self, query, args = None):
+    def get_row(self, query, args = ()):
         c = self.execute_query(query, args)
         data = c.fetchone()
         c.close()
         return data
 
-    def get_rows(self, query, args = None):
+    def get_rows(self, query, args = ()):
         c = self.execute_query(query, args)
         data = c.fetchall()
         c.close()
         return data
 
-    def get_rows_list(self, query, args = None):
+    def get_rows_list(self, query, args = ()):
         c = self.execute_query(query, args)
         data = [row.values()[0] for row in c.fetchall()]
         c.close()
