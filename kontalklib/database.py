@@ -256,8 +256,8 @@ class MessagesDb(MessengerDb):
 
     def need_notification(self, resolve_groups = False):
         '''Returns messages which need to be push notified.'''
-        q = 'SELECT SUBSTR(recipient, 1, %d) recipient, COUNT(*) num ' + \
-            'FROM messages GROUP BY SUBSTR(recipient, 1, %d)' % \
+        q = 'SELECT SUBSTR(recipient, 1, %d) recipient, COUNT(*) num \
+            FROM messages GROUP BY SUBSTR(recipient, 1, %d)' % \
             (utils.USERID_LENGTH, utils.USERID_LENGTH)
         rs = self.get_rows(q)
         if resolve_groups:
