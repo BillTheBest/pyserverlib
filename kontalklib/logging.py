@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+'''Twisted logging to Python loggin bridge.'''
 '''
   Kontalk Pyserver2
   Copyright (C) 2011 Kontalk Devteam <devteam@kontalk.org>
@@ -16,3 +17,15 @@
  You should have received a copy of the GNU General Public License
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
+
+
+from twisted.python import log
+
+def info(*args, **kwargs):
+    log.msg(*args, **kwargs)
+
+def debug(*args, **kwargs):
+    log.msg(*args, **kwargs)
+
+def error(*args, **kwargs):
+    log.err(*args, **kwargs)

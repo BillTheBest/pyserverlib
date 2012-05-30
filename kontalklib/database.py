@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 '''Interface to messenger database.'''
 '''
-  Kontalk Android client
+  Kontalk Pyserver2
   Copyright (C) 2011 Kontalk Devteam <devteam@kontalk.org>
 
  This program is free software: you can redistribute it and/or modify
