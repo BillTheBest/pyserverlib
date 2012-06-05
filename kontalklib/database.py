@@ -70,7 +70,8 @@ class MessengerDb:
 
     def execute_update(self, query, args = ()):
         c = self._db.cursor()
-        n = c.execute(query, args)
+        c.execute(query, args)
+        n = c.rowcount
         c.close()
         return n
 
