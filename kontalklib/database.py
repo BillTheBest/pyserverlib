@@ -32,7 +32,7 @@ def connect_config(servercfg):
     return connect(
         config['host'], config['port'],
         config['user'], config['password'],
-        config['dbname'], servercfg['server']
+        config['dbname'], servercfg
     )
 
 def connect(host, port, user, passwd, dbname, servercfg):
@@ -121,7 +121,7 @@ class ServersDb(MessengerDb):
 
     def get_list(self, address_only = False, include_me = False):
         if not include_me:
-            args = [ self._config['fingerprint'] ]
+            args = [ self._config['server']['fingerprint'] ]
             extra = ' WHERE UPPER(fingerprint) <> UPPER(?)'
         else:
             args = None
@@ -157,7 +157,7 @@ class UsercacheDb(MessengerDb):
         return self.get_rows(q, (userid, ))
 
     def purge_old_entries(self):
-        q = 'DELETE FROM usercache WHERE UNIX_TIMESTAMP() > (UNIX_TIMESTAMP(timestamp) + %d)' % (self._config['usercache.expire'])
+        q = 'DELETE FROM usercache WHERE UNIX_TIMESTAMP() > (UNIX_TIMESTAMP(timestamp) + %d)' % (self._config['broker']['usercache.expire'])
         return self.execute_update(q)
 
     def update(self, userid, timestamp = None, **kwargs):
@@ -196,7 +196,7 @@ class UsercacheDb(MessengerDb):
     def _entry_changed(self, old, new):
         return (
             # timeout expired
-            (new['timestamp'] > (old['timestamp'] + self._config['usercache.validity']))
+            (new['timestamp'] > (old['timestamp'] + self._config['broker']['usercache.validity']))
         )
 
 
