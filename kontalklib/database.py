@@ -124,7 +124,7 @@ class ServersDb(MessengerDb):
             args = [ self._config['server']['fingerprint'] ]
             extra = ' WHERE UPPER(fingerprint) <> UPPER(?)'
         else:
-            args = None
+            args = []
             extra = ''
 
         if address_only:
