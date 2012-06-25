@@ -21,11 +21,47 @@
 
 from twisted.python import log
 
-def info(*args, **kwargs):
-    log.msg(*args, **kwargs)
+LEVEL_DEBUG = 1
+LEVEL_INFO = 1 << 1
+LEVEL_WARN = 1 << 2
+LEVEL_ERROR = 1 << 3
+# all levels
+LEVEL_ALL = LEVEL_DEBUG | LEVEL_INFO | LEVEL_WARN | LEVEL_ERROR
+
+level = 0
+
+def init(cfg):
+    '''Initializes logging system.'''
+    global level
+    l = cfg['log.levels']
+    if 'ALL' in l:
+        level = LEVEL_ALL
+    else:
+        if 'DEBUG' in l:
+            level |= LEVEL_DEBUG
+        if 'INFO' in l:
+            level |= LEVEL_INFO
+        if 'WARN' in l:
+            level |= LEVEL_WARN
+        if 'ERROR' in l:
+            level |= LEVEL_ERROR
 
 def debug(*args, **kwargs):
-    log.msg(*args, **kwargs)
+    global level
+    if level & LEVEL_DEBUG:
+        log.msg(*args, **kwargs)
+
+def info(*args, **kwargs):
+    global level
+    if level & LEVEL_INFO:
+        log.msg(*args, **kwargs)
+
+def warn(*args, **kwargs):
+    global level
+    if level & LEVEL_WARN:
+        log.msg(*args, **kwargs)
 
 def error(*args, **kwargs):
-    log.err(*args, **kwargs)
+    global level
+    if level & LEVEL_ERROR:
+        log.msg(*args, **kwargs)
