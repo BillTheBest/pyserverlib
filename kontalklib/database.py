@@ -303,8 +303,6 @@ class MessagesDb(MessengerDb):
         return self.execute_update('DELETE FROM messages WHERE id = ?', [ msgid ])
 
     def insert(self, id, timestamp, sender, recipient, group, mime, content, encrypted, filename, ttl, need_ack, orig_id = None):
-        log.debug('using id: %s' % (id))
-
         args = [
             id,
             orig_id,
