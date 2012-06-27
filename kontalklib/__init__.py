@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 '''
-  Kontalk Pyserver2
+  Kontalk Pyserver
   Copyright (C) 2011 Kontalk Devteam <devteam@kontalk.org>
 
  This program is free software: you can redistribute it and/or modify
