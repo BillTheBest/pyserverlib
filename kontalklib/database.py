@@ -183,14 +183,16 @@ class UsercacheDb(MessengerDb):
 
         fmt = [ ts_str, ts_str]
         q = 'INSERT INTO usercache (%s) VALUES (?, %s%s)' % (', '.join(cols), ts_str, ',?' * (len(args) - 1))
-        #log.debug('usercache(%s): %s' % (userid, q))
+        #log.debug('usercache(%s): %s [%s]' % (userid, q, args))
         try:
             return self.execute_update(q, args)
         except:
             fs = [ x + ' = ?' for x in cols[2:] ]
             fs.insert(0, 'timestamp = ' + ts_str)
             q = 'UPDATE usercache SET %s WHERE userid = ?' % ', '.join(fs)
-            #log.debug('usercache(%s): %s' % (userid, q))
+            del args[0]
+            args.append(userid)
+            #log.debug('usercache(%s): %s [%s]' % (userid, q, args))
             return self.execute_update(q, args)
 
     def _entry_changed(self, old, new):
