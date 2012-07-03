@@ -357,7 +357,7 @@ class MessagesDb(MessengerDb):
             cond = '/2'
         else:
             cond = '- %d' % count
-        q = "UPDATE messages SET ttl = ttl %s WHERE SUBSTR(recipient, 1, %d) NOT IN (SELECT SUBSTR(userid, 1, %d) FROM usercache)" % \
+        q = "UPDATE messages m SET ttl = ttl %s WHERE recipient NOT IN (SELECT SUBSTR(userid, 1, LENGTH(m.recipient)) FROM usercache)" % \
             (cond, utils.USERID_LENGTH, utils.USERID_LENGTH)
         return self.execute_update(q)
 
