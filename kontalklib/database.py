@@ -283,9 +283,9 @@ class MessagesDb(MessengerDb):
             self.resolve_groups(rs)
         return rs
 
-    def expired(self, resolve_groups = False):
-        '''Returns expired messages (TTL <= 0).'''
-        q = 'SELECT * FROM messages WHERE ttl <= 0'
+    def expired(self, threshold=0, resolve_groups = False):
+        '''Returns expired messages (TTL <= threshold).'''
+        q = 'SELECT * FROM messages WHERE ttl <= %d' % threshold
         rs = self.get_rows(q)
         if resolve_groups:
             self.resolve_groups(rs)
@@ -347,6 +347,23 @@ class MessagesDb(MessengerDb):
 
     def ttl_half(self, msgid):
         return self.execute_update("UPDATE messages SET ttl = ttl / 2 WHERE id = ?", (msgid,))
+
+    def ttl_expired(self, count = False):
+        '''
+        Decrease TTL to messages for users with no usercache entry.
+        Use count=False for half the value.
+        '''
+        if count == False:
+            cond = '/2'
+        else:
+            cond = '- %d' % count
+        q = "UPDATE messages SET ttl = ttl %s WHERE SUBSTR(recipient, 1, %d) NOT IN (SELECT SUBSTR(userid, 1, %d) FROM usercache)" % \
+            (cond, utils.USERID_LENGTH, utils.USERID_LENGTH)
+        return self.execute_update(q)
+
+    def purge_expired(self, threshold=0):
+        '''Purge messages with TTL <= threshold.'''
+        return self.execute_update("DELETE FROM messages WHERE ttl <= %d" % threshold)
 
 
 class ValidationsDb(MessengerDb):
