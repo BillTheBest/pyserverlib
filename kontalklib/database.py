@@ -358,7 +358,7 @@ class MessagesDb(MessengerDb):
         else:
             cond = '- %d' % count
         q = "UPDATE messages m SET ttl = ttl %s WHERE recipient NOT IN (SELECT SUBSTR(userid, 1, LENGTH(m.recipient)) FROM usercache)" % \
-            (cond, utils.USERID_LENGTH, utils.USERID_LENGTH)
+            (cond)
         return self.execute_update(q)
 
     def purge_expired(self, threshold=0):
