@@ -414,9 +414,14 @@ class AttachmentsDb(MessengerDb):
 
         return self.get_row(query, args)
 
+    def touch(self, filename, userid = False):
+        '''Updates timestamp column to now().'''
+        # TODO
+        pass
+
     def insert(self, userid, filename, mime, md5sum):
         '''Inserts a new attachments entry.'''
-        return self.execute_update('INSERT INTO attachments VALUES(?, ?, ?, ?)',
+        return self.execute_update('INSERT INTO attachments VALUES(?, ?, ?, ?, now())',
             (userid, filename, mime, md5sum))
 
     def delete(self, filename, userid = False):
@@ -428,3 +433,8 @@ class AttachmentsDb(MessengerDb):
             args.append(userid)
 
         return self.execute_update(query, args)
+
+    def purge_expired(self):
+        '''Purge expired attachment entries.'''
+        q = 'DELETE FROM attachments WHERE UNIX_TIMESTAMP() > (UNIX_TIMESTAMP(timestamp) + %d)' % (self._config['fileserver']['attachments.expire'])
+        return self.execute_update(q)
