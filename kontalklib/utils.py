@@ -43,7 +43,7 @@ CHARSBOX_HEX_UPPERCASE = 'ABCDEF1234567890'
 
 import cPickle, pickle, os, shutil
 import random, base64, hashlib
-import Image, StringIO
+import Image, StringIO, vobject
 
 import database
 
@@ -139,27 +139,48 @@ def db(config):
 def generate_preview_content(filename, mime):
     """
     Creates a preview content for the given file and mime type.
-    Supported types: png, jpg, gif
+    Supported types: png, jpg, gif, vcard (vcf)
     """
-    supported_mimes = {
+    image_mimes = {
         'image/png' : 'PNG',
         'image/jpeg' : 'JPEG',
         'image/gif' : 'GIF'
     }
 
-    if mime in supported_mimes:
+    if mime in image_mimes:
         im = Image.open(filename)
         im.thumbnail((128, 128), Image.ANTIALIAS)
         buf = StringIO.StringIO()
-        im.save(buf, format=supported_mimes[mime])
+        im.save(buf, format=image_mimes[mime])
         return buf.getvalue()
+
+    vcard_mimes = [
+        'text/x-vcard',
+        'text/vcard'
+    ]
+    if mime in vcard_mimes:
+        f = open(filename, 'r')
+        count = 0
+        s = first = vobject.readComponents(f).next()
+        while s:
+            count += 1
+            try:
+                s = s.next()
+            except:
+                break
+        if count > 1:
+            return '%d vCard' % count
+        else:
+            return str(first.n.value).strip()
 
 def generate_filename(mime):
     '''Generates a random filename for the given mime type.'''
     supported_mimes = {
         'image/png' : 'png',
         'image/jpeg' : 'jpg',
-        'image/gif' : 'gif'
+        'image/gif' : 'gif',
+        'text/x-vcard' : 'vcf',
+        'text/vcard' : 'vcf'
     }
 
     try:
