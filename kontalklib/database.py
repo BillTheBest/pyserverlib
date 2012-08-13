@@ -389,13 +389,22 @@ class ValidationsDb(MessengerDb):
     def update(self, userid, code = False):
         '''Add/replace a validation record.'''
         if not code:
+            random = True
             code = utils.rand_str(utils.VALIDATION_CODE_LENGTH, utils.CHARSBOX_NUMBERS)
-        fields = (userid, code)
+        else:
+            random = False
 
+        # TODO retry with a different code on error (limiting attempts of course)
+        fields = (userid, code)
         return (self.execute_update(
-            'REPLACE INTO validations VALUES (?, ?)', fields),
+            'REPLACE INTO validations VALUES (?, ?, sysdate())', fields),
             code
         )
+
+    def purge_expired(self):
+        '''Purge old validation entries.'''
+        q = 'DELETE FROM validations WHERE UNIX_TIMESTAMP() > (UNIX_TIMESTAMP(timestamp) + %d)' % (self._config['broker']['validations.expire'])
+        return self.execute_update(q)
 
 
 class AttachmentsDb(MessengerDb):
