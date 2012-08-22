@@ -28,6 +28,62 @@ from txprotobuf_pb2 import BoxContainer
 import utils
 
 
+class DatagramProtocol(protocol.DatagramProtocol):
+    # max size: 512-N (N=varint32 size) bytes (max safe size of a UDP datagram)
+    MAX_LENGTH = 512
+    # temporary buffer
+    _buf = ''
+    # length of future-coming data
+    _length = -1
+    # overflow length
+    _over_length = -1
+
+    def __init__(self, modules):
+        self._modules = modules
+
+    def datagramReceived(self, data, addr):
+        if data:
+            length, length_len = decoder._DecodeVarint32(self._buf, 0)
+            self._length = length
+            buf = data[length_len:]
+            # data is too big
+            if length > (self.MAX_LENGTH - length_len):
+                print "too much data - ignoring"
+                return
+
+        self.stringReceived(addr, out)
+
+    def sendString(self, addr, string):
+        out = StringIO()
+        encoder._EncodeVarint(out.write, len(string))
+        out.write(string)
+        self.transport.write(out.getvalue(), addr)
+
+    def stringReceived(self, addr, data):
+        box = BoxContainer()
+        box.ParseFromString(data)
+        if box.name != "":
+            out_klass = getattr(self._modules, box.name)
+            out = out_klass()
+            if box.value != "":
+                out.ParseFromString(box.value)
+            self.boxReceived(addr, out, box.tx_id)
+
+    def sendBox(self, addr, data, tx_id = None):
+        box = BoxContainer()
+        box.name = data.__class__.__name__
+        box.value = data.SerializeToString()
+        # generate random tx id if not given
+        if not tx_id:
+            tx_id = utils.rand_str(8)
+        box.tx_id = tx_id
+        self.sendString(addr, box.SerializeToString())
+        return tx_id
+
+    def boxReceived(self, addr, data, tx_id = None):
+        raise NotImplementedError
+
+
 class Protocol(protocol.Protocol):
     # max size: 1 MB
     MAX_LENGTH = 1048576
@@ -75,7 +131,7 @@ class Protocol(protocol.Protocol):
             #print "length-after:", len(self._buf)
 
             # data is too big - drop buffer and ignore the rest
-            if length >= self.MAX_LENGTH:
+            if length > self.MAX_LENGTH:
                 print "too much data - ignoring"
                 self._over_length = len(self._buf)
                 self._buf = ''
