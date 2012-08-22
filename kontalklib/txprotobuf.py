@@ -31,27 +31,22 @@ import utils
 class DatagramProtocol(protocol.DatagramProtocol):
     # max size: 512-N (N=varint32 size) bytes (max safe size of a UDP datagram)
     MAX_LENGTH = 512
-    # temporary buffer
-    _buf = ''
-    # length of future-coming data
-    _length = -1
-    # overflow length
-    _over_length = -1
 
     def __init__(self, modules):
         self._modules = modules
 
     def datagramReceived(self, data, addr):
+        buf = None
         if data:
-            length, length_len = decoder._DecodeVarint32(self._buf, 0)
-            self._length = length
-            buf = data[length_len:]
+            length, length_len = decoder._DecodeVarint32(data, 0)
             # data is too big
             if length > (self.MAX_LENGTH - length_len):
                 print "too much data - ignoring"
                 return
+            buf = data[length_len:]
 
-        self.stringReceived(addr, out)
+        if buf:
+            self.stringReceived(addr, buf)
 
     def sendString(self, addr, string):
         out = StringIO()

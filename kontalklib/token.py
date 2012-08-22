@@ -48,7 +48,7 @@ def user_token(userid, fp):
     token = cipher.read()
     return base64.b64encode(token)
 
-def verify_user_token(token, serversdb, fp = None):
+def verify_user_token(token, keyring, fp = None):
     '''Verifies a user token against a single fingerprint or the keyring.'''
 
     # decode base64 first
@@ -82,7 +82,6 @@ def verify_user_token(token, serversdb, fp = None):
             return userid
 
         # no match - compare with keyring
-        keyring = serversdb.get_keyring()
         for key in keyring:
             if sign.fpr.upper() == key.upper():
                 return userid

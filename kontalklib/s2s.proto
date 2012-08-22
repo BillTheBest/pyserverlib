@@ -1,0 +1,14 @@
+// Server protocol definitions - revision 1
+
+
+// user presence message
+message UserPresence {
+    enum UserEvent {
+        EVENT_ONLINE = 1;
+        EVENT_OFFLINE = 2;
+        EVENT_STATUS_CHANGED = 3;
+    }
+    required UserEvent event = 2;
+    required string user_id = 3;
+    optional string status_message = 4;
+}

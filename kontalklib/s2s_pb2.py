@@ -11,9 +11,86 @@ from google.protobuf import descriptor_pb2
 DESCRIPTOR = descriptor.FileDescriptor(
   name='s2s.proto',
   package='',
-  serialized_pb='\n\ts2s.proto')
+  serialized_pb='\n\ts2s.proto\"\xab\x01\n\x0cUserPresence\x12&\n\x05\x65vent\x18\x02 \x02(\x0e\x32\x17.UserPresence.UserEvent\x12\x0f\n\x07user_id\x18\x03 \x02(\t\x12\x16\n\x0estatus_message\x18\x04 \x01(\t\"J\n\tUserEvent\x12\x10\n\x0c\x45VENT_ONLINE\x10\x01\x12\x11\n\rEVENT_OFFLINE\x10\x02\x12\x18\n\x14\x45VENT_STATUS_CHANGED\x10\x03')
 
 
 
+_USERPRESENCE_USEREVENT = descriptor.EnumDescriptor(
+  name='UserEvent',
+  full_name='UserPresence.UserEvent',
+  filename=None,
+  file=DESCRIPTOR,
+  values=[
+    descriptor.EnumValueDescriptor(
+      name='EVENT_ONLINE', index=0, number=1,
+      options=None,
+      type=None),
+    descriptor.EnumValueDescriptor(
+      name='EVENT_OFFLINE', index=1, number=2,
+      options=None,
+      type=None),
+    descriptor.EnumValueDescriptor(
+      name='EVENT_STATUS_CHANGED', index=2, number=3,
+      options=None,
+      type=None),
+  ],
+  containing_type=None,
+  options=None,
+  serialized_start=111,
+  serialized_end=185,
+)
+
+
+_USERPRESENCE = descriptor.Descriptor(
+  name='UserPresence',
+  full_name='UserPresence',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    descriptor.FieldDescriptor(
+      name='event', full_name='UserPresence.event', index=0,
+      number=2, type=14, cpp_type=8, label=2,
+      has_default_value=False, default_value=1,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    descriptor.FieldDescriptor(
+      name='user_id', full_name='UserPresence.user_id', index=1,
+      number=3, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=unicode("", "utf-8"),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    descriptor.FieldDescriptor(
+      name='status_message', full_name='UserPresence.status_message', index=2,
+      number=4, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=unicode("", "utf-8"),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+    _USERPRESENCE_USEREVENT,
+  ],
+  options=None,
+  is_extendable=False,
+  extension_ranges=[],
+  serialized_start=14,
+  serialized_end=185,
+)
+
+_USERPRESENCE.fields_by_name['event'].enum_type = _USERPRESENCE_USEREVENT
+_USERPRESENCE_USEREVENT.containing_type = _USERPRESENCE;
+DESCRIPTOR.message_types_by_name['UserPresence'] = _USERPRESENCE
+
+class UserPresence(message.Message):
+  __metaclass__ = reflection.GeneratedProtocolMessageType
+  DESCRIPTOR = _USERPRESENCE
+  
+  # @@protoc_insertion_point(class_scope:UserPresence)
 
 # @@protoc_insertion_point(module_scope)
