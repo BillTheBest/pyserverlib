@@ -25,7 +25,7 @@ from twisted.internet import protocol
 from google.protobuf.internal import encoder, decoder
 
 from txprotobuf_pb2 import BoxContainer
-import utils
+import token, utils
 
 
 class DatagramProtocol(protocol.DatagramProtocol):
@@ -61,13 +61,16 @@ class DatagramProtocol(protocol.DatagramProtocol):
             out_klass = getattr(self._modules, box.name)
             out = out_klass()
             if box.value != "":
-                out.ParseFromString(box.value)
-            self.boxReceived(addr, out, box.tx_id)
+                # verify and extract signed content
+                (fp, value) = token.verify_node_data(box.value, self.keyring)
+                if value:
+                    out.ParseFromString(value)
+                    self.boxReceived(addr, out, fp, box.tx_id)
 
     def sendBox(self, addr, data, tx_id = None):
         box = BoxContainer()
         box.name = data.__class__.__name__
-        box.value = data.SerializeToString()
+        box.value = token.sign_node_data(data.SerializeToString(), self.fingerprint)
         # generate random tx id if not given
         if not tx_id:
             tx_id = utils.rand_str(8)
@@ -75,7 +78,7 @@ class DatagramProtocol(protocol.DatagramProtocol):
         self.sendString(addr, box.SerializeToString())
         return tx_id
 
-    def boxReceived(self, addr, data, tx_id = None):
+    def boxReceived(self, addr, data, fingerprint, tx_id = None):
         raise NotImplementedError
 
 

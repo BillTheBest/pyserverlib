@@ -80,49 +80,6 @@ def sha1(text):
     hashed = hashlib.sha1(text)
     return hashed.hexdigest()
 
-def generate_node_token(rcpts, fp, text = None):
-    if text == None:
-        text = fp
-
-    plain = core.Data(text)
-    cipher = core.Data()
-    ctx = core.Context()
-    ctx.set_armor(0)
-
-    # signing key
-    ctx.signers_add(ctx.get_key(fp, True))
-    # encrypting keys
-    keys = []
-    for r in rcpts:
-        keys.append(ctx.get_key(r, False))
-
-    ctx.op_encrypt_sign(keys, 1, plain, cipher)
-    cipher.seek(0, 0)
-    token = cipher.read()
-    return base64.b64encode(token)
-
-def verify_node_token(token, fp, text = None):
-    # decode base64 first
-    data = base64.b64decode(token)
-    # setup pyme
-    cipher = core.Data(data)
-    plain = core.Data()
-    ctx = core.Context()
-    ctx.set_armor(0)
-
-    ctx.op_decrypt_verify(cipher, plain)
-    # check verification result
-    res = ctx.op_verify_result()
-    for sign in res.signatures:
-        if sign.fpr == fp:
-            plain.seek(0, 0)
-            verify_fp = plain.read()
-            check_text = text if text != None else fp
-            if verify_fp == check_text:
-                return check_text
-
-    return None
-
 def dict_get(data, key, default = None):
     return data[key] if key in data else default
 
