@@ -107,34 +107,17 @@ class ServersDb(MessengerDb):
     def __init__(self, db, config):
         MessengerDb.__init__(self, db, config)
 
-    def get_address(self, fingerprint):
-        r = self.get_row('SELECT host FROM servers WHERE fingerprint = ?', (fingerprint, ))
-        if r:
-            return r['host']
-
-    def get_map(self, include_me = False):
-        data = self.get_list(False, include_me)
+    def get_list(self):
         res = {}
+        data = self.get_rows('SELECT * FROM servers')
         for row in data:
-            res[row['fingerprint']] = (row['host'], row['serverlink_port'])
+            res[row['fingerprint']] = {
+                'host' : str(row['host']),
+                'c2s' : row['client_port'],
+                's2s' : row['serverlink_port'],
+                'http' : row['http_port']
+            }
         return res
-
-    def get_list(self, address_only = False, include_me = False):
-        if not include_me:
-            args = [ self._config['server']['fingerprint'] ]
-            extra = ' WHERE UPPER(fingerprint) <> UPPER(?)'
-        else:
-            args = []
-            extra = ''
-
-        if address_only:
-            return self.get_rows_list('SELECT host FROM servers' + extra, args)
-        else:
-            return self.get_rows('SELECT * FROM servers' + extra, args)
-
-    def get_keyring(self):
-        return self.get_rows_list('SELECT fingerprint FROM servers')
-
 
 class UsercacheDb(MessengerDb):
     '''Interface to the usercache table.'''
