@@ -108,15 +108,15 @@ class ServersDb(MessengerDb):
         MessengerDb.__init__(self, db, config)
 
     def get_address(self, fingerprint):
-        r = self.get_row('SELECT address FROM servers WHERE fingerprint = ?', (fingerprint, ))
+        r = self.get_row('SELECT host FROM servers WHERE fingerprint = ?', (fingerprint, ))
         if r:
-            return r['address']
+            return r['host']
 
     def get_map(self, include_me = False):
         data = self.get_list(False, include_me)
         res = {}
         for row in data:
-            res[row['fingerprint']] = (row['address'], row['serverlink'])
+            res[row['fingerprint']] = (row['host'], row['serverlink_port'])
         return res
 
     def get_list(self, address_only = False, include_me = False):
@@ -128,7 +128,7 @@ class ServersDb(MessengerDb):
             extra = ''
 
         if address_only:
-            return self.get_rows_list('SELECT address FROM servers' + extra, args)
+            return self.get_rows_list('SELECT host FROM servers' + extra, args)
         else:
             return self.get_rows('SELECT * FROM servers' + extra, args)
 
