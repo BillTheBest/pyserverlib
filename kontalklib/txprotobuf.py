@@ -25,61 +25,7 @@ from twisted.internet import protocol
 from google.protobuf.internal import encoder, decoder
 
 from txprotobuf_pb2 import BoxContainer
-import token, utils
-
-
-class DatagramProtocol(protocol.DatagramProtocol):
-    # max size: 512-N (N=varint32 size) bytes (max safe size of a UDP datagram)
-    MAX_LENGTH = 512
-
-    def __init__(self, modules):
-        self._modules = modules
-
-    def datagramReceived(self, data, addr):
-        buf = None
-        if data:
-            length, length_len = decoder._DecodeVarint32(data, 0)
-            # data is too big
-            if length > (self.MAX_LENGTH - length_len):
-                print "too much data - ignoring"
-                return
-            buf = data[length_len:]
-
-        if buf:
-            self.stringReceived(addr, buf)
-
-    def sendString(self, addr, string):
-        out = StringIO()
-        encoder._EncodeVarint(out.write, len(string))
-        out.write(string)
-        self.transport.write(out.getvalue(), addr)
-
-    def stringReceived(self, addr, data):
-        box = BoxContainer()
-        box.ParseFromString(data)
-        if box.name != "":
-            out_klass = getattr(self._modules, box.name)
-            out = out_klass()
-            if box.value != "":
-                # verify and extract signed content
-                (fp, value) = token.verify_node_data(box.value, self.keyring)
-                if value:
-                    out.ParseFromString(value)
-                    self.boxReceived(addr, out, fp, box.tx_id)
-
-    def sendBox(self, addr, data, tx_id = None):
-        box = BoxContainer()
-        box.name = data.__class__.__name__
-        box.value = token.sign_node_data(data.SerializeToString(), self.fingerprint)
-        # generate random tx id if not given
-        if not tx_id:
-            tx_id = utils.rand_str(8)
-        box.tx_id = tx_id
-        self.sendString(addr, box.SerializeToString())
-        return tx_id
-
-    def boxReceived(self, addr, data, fingerprint, tx_id = None):
-        raise NotImplementedError
+import utils
 
 
 class Protocol(protocol.Protocol):

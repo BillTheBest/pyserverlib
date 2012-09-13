@@ -145,7 +145,7 @@ def verify_node_token(token, keyring):
 
     return None
 
-def sign_node_data(data, fp):
+def node_data(data, fp):
     '''Signs data using the key identified by the given fingerprint.'''
     plain = core.Data(data)
     cipher = core.Data()
