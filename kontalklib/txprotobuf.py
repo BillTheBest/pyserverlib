@@ -28,8 +28,7 @@ from txprotobuf_pb2 import BoxContainer
 import utils, token
 
 class DatagramProtocol(protocol.DatagramProtocol):
-    # max size: 512-N (N=varint32 size) bytes (max safe size of a UDP datagram)
-    MAX_LENGTH = 512
+    MAX_LENGTH = 8192
 
     def __init__(self, modules):
         self._modules = modules
