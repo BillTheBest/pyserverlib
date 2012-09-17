@@ -64,12 +64,12 @@ class DatagramProtocol(protocol.DatagramProtocol):
                 (fp, value) = token.verify_node_data(box.value, self.keyring)
                 if value:
                     out.ParseFromString(value)
-                    self.boxReceived(addr, out, fp, box.tx_id)
+                    self.boxReceived(fp, box.tx_id, out)
 
     def sendBox(self, addr, data, tx_id = None):
         box = BoxContainer()
         box.name = data.__class__.__name__
-        box.value = token.sign_node_data(data.SerializeToString(), self.fingerprint)
+        box.value = token.node_data(data.SerializeToString(), self.fingerprint)
         # generate random tx id if not given
         if not tx_id:
             tx_id = utils.rand_str(8)
@@ -77,7 +77,7 @@ class DatagramProtocol(protocol.DatagramProtocol):
         self.sendString(addr, box.SerializeToString())
         return tx_id
 
-    def boxReceived(self, addr, data, fingerprint, tx_id = None):
+    def boxReceived(self, fingerprint, tx_id, data):
         raise NotImplementedError
 
 

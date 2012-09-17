@@ -11,7 +11,7 @@ from google.protobuf import descriptor_pb2
 DESCRIPTOR = descriptor.FileDescriptor(
   name='s2s.proto',
   package='',
-  serialized_pb='\n\ts2s.proto\"\xab\x01\n\x0cUserPresence\x12&\n\x05\x65vent\x18\x02 \x02(\x0e\x32\x17.UserPresence.UserEvent\x12\x0f\n\x07user_id\x18\x03 \x02(\t\x12\x16\n\x0estatus_message\x18\x04 \x01(\t\"J\n\tUserEvent\x12\x10\n\x0c\x45VENT_ONLINE\x10\x01\x12\x11\n\rEVENT_OFFLINE\x10\x02\x12\x18\n\x14\x45VENT_STATUS_CHANGED\x10\x03')
+  serialized_pb='\n\ts2s.proto\"\xab\x01\n\x0cUserPresence\x12&\n\x05\x65vent\x18\x02 \x02(\x0e\x32\x17.UserPresence.UserEvent\x12\x0f\n\x07user_id\x18\x03 \x02(\t\x12\x16\n\x0estatus_message\x18\x04 \x01(\t\"J\n\tUserEvent\x12\x10\n\x0c\x45VENT_ONLINE\x10\x01\x12\x11\n\rEVENT_OFFLINE\x10\x02\x12\x18\n\x14\x45VENT_STATUS_CHANGED\x10\x03\"$\n\x11UserLookupRequest\x12\x0f\n\x07user_id\x18\x01 \x03(\t\"\x8d\x01\n\x12UserLookupResponse\x12(\n\x05\x65ntry\x18\x01 \x03(\x0b\x32\x19.UserLookupResponse.Entry\x1aM\n\x05\x45ntry\x12\x0f\n\x07user_id\x18\x01 \x02(\t\x12\x11\n\ttimestamp\x18\x02 \x01(\x04\x12\x0e\n\x06status\x18\x03 \x01(\t\x12\x10\n\x08timediff\x18\x04 \x01(\x04')
 
 
 
@@ -83,14 +83,140 @@ _USERPRESENCE = descriptor.Descriptor(
   serialized_end=185,
 )
 
+
+_USERLOOKUPREQUEST = descriptor.Descriptor(
+  name='UserLookupRequest',
+  full_name='UserLookupRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    descriptor.FieldDescriptor(
+      name='user_id', full_name='UserLookupRequest.user_id', index=0,
+      number=1, type=9, cpp_type=9, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  extension_ranges=[],
+  serialized_start=187,
+  serialized_end=223,
+)
+
+
+_USERLOOKUPRESPONSE_ENTRY = descriptor.Descriptor(
+  name='Entry',
+  full_name='UserLookupResponse.Entry',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    descriptor.FieldDescriptor(
+      name='user_id', full_name='UserLookupResponse.Entry.user_id', index=0,
+      number=1, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=unicode("", "utf-8"),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    descriptor.FieldDescriptor(
+      name='timestamp', full_name='UserLookupResponse.Entry.timestamp', index=1,
+      number=2, type=4, cpp_type=4, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    descriptor.FieldDescriptor(
+      name='status', full_name='UserLookupResponse.Entry.status', index=2,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=unicode("", "utf-8"),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    descriptor.FieldDescriptor(
+      name='timediff', full_name='UserLookupResponse.Entry.timediff', index=3,
+      number=4, type=4, cpp_type=4, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  extension_ranges=[],
+  serialized_start=290,
+  serialized_end=367,
+)
+
+_USERLOOKUPRESPONSE = descriptor.Descriptor(
+  name='UserLookupResponse',
+  full_name='UserLookupResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    descriptor.FieldDescriptor(
+      name='entry', full_name='UserLookupResponse.entry', index=0,
+      number=1, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[_USERLOOKUPRESPONSE_ENTRY, ],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  extension_ranges=[],
+  serialized_start=226,
+  serialized_end=367,
+)
+
 _USERPRESENCE.fields_by_name['event'].enum_type = _USERPRESENCE_USEREVENT
 _USERPRESENCE_USEREVENT.containing_type = _USERPRESENCE;
+_USERLOOKUPRESPONSE_ENTRY.containing_type = _USERLOOKUPRESPONSE;
+_USERLOOKUPRESPONSE.fields_by_name['entry'].message_type = _USERLOOKUPRESPONSE_ENTRY
 DESCRIPTOR.message_types_by_name['UserPresence'] = _USERPRESENCE
+DESCRIPTOR.message_types_by_name['UserLookupRequest'] = _USERLOOKUPREQUEST
+DESCRIPTOR.message_types_by_name['UserLookupResponse'] = _USERLOOKUPRESPONSE
 
 class UserPresence(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
   DESCRIPTOR = _USERPRESENCE
   
   # @@protoc_insertion_point(class_scope:UserPresence)
+
+class UserLookupRequest(message.Message):
+  __metaclass__ = reflection.GeneratedProtocolMessageType
+  DESCRIPTOR = _USERLOOKUPREQUEST
+  
+  # @@protoc_insertion_point(class_scope:UserLookupRequest)
+
+class UserLookupResponse(message.Message):
+  __metaclass__ = reflection.GeneratedProtocolMessageType
+  
+  class Entry(message.Message):
+    __metaclass__ = reflection.GeneratedProtocolMessageType
+    DESCRIPTOR = _USERLOOKUPRESPONSE_ENTRY
+    
+    # @@protoc_insertion_point(class_scope:UserLookupResponse.Entry)
+  DESCRIPTOR = _USERLOOKUPRESPONSE
+  
+  # @@protoc_insertion_point(class_scope:UserLookupResponse)
 
 # @@protoc_insertion_point(module_scope)
