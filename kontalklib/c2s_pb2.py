@@ -11,7 +11,7 @@ from google.protobuf import descriptor_pb2
 DESCRIPTOR = descriptor.FileDescriptor(
   name='c2s.proto',
   package='',
-  serialized_pb='\n\tc2s.proto\"$\n\x13\x41uthenticateRequest\x12\r\n\x05token\x18\x01 \x02(\t\"%\n\x14\x41uthenticateResponse\x12\r\n\x05valid\x18\x01 \x02(\x08\"U\n\x12MessagePostRequest\x12\x11\n\trecipient\x18\x01 \x03(\t\x12\x0c\n\x04mime\x18\x02 \x01(\t\x12\r\n\x05\x66lags\x18\x03 \x03(\t\x12\x0f\n\x07\x63ontent\x18\x04 \x01(\x0c\"\xcf\x02\n\x13MessagePostResponse\x12/\n\x05\x65ntry\x18\x01 \x03(\x0b\x32 .MessagePostResponse.MessageSent\x1a\x86\x02\n\x0bMessageSent\x12\x42\n\x06status\x18\x01 \x02(\x0e\x32\x32.MessagePostResponse.MessageSent.MessageSentStatus\x12\x0f\n\x07user_id\x18\x02 \x02(\t\x12\x12\n\nmessage_id\x18\x03 \x01(\t\"\x8d\x01\n\x11MessageSentStatus\x12\x12\n\x0eSTATUS_SUCCESS\x10\x00\x12\x10\n\x0cSTATUS_ERROR\x10\x01\x12\x0f\n\x0bSTATUS_BUSY\x10\x02\x12\x18\n\x14STATUS_USER_NOTFOUND\x10\x03\x12\x0e\n\nSTATUS_BIG\x10\x04\x12\x17\n\x13STATUS_NOTSUPPORTED\x10\x05\"\xc4\x01\n\nNewMessage\x12\x12\n\nmessage_id\x18\x01 \x02(\t\x12\x11\n\ttimestamp\x18\x02 \x02(\t\x12\x0e\n\x06sender\x18\x03 \x02(\t\x12\r\n\x05group\x18\x04 \x03(\t\x12\x13\n\x0boriginal_id\x18\x05 \x01(\t\x12\x0c\n\x04mime\x18\x06 \x02(\t\x12\r\n\x05\x66lags\x18\x07 \x03(\t\x12\x0f\n\x07\x63ontent\x18\x08 \x02(\x0c\x12\x0b\n\x03url\x18\t \x01(\t\x12\x10\n\x08need_ack\x18\n \x02(\x08\x12\x0e\n\x06length\x18\x0b \x01(\x04\"\'\n\x11MessageAckRequest\x12\x12\n\nmessage_id\x18\x01 \x03(\t\"\xe7\x01\n\x12MessageAckResponse\x12(\n\x05\x65ntry\x18\x01 \x03(\x0b\x32\x19.MessageAckResponse.Entry\x1a\xa6\x01\n\x05\x45ntry\x12\x12\n\nmessage_id\x18\x01 \x02(\t\x12:\n\x06status\x18\x02 \x02(\x0e\x32*.MessageAckResponse.Entry.MessageAckStatus\"M\n\x10MessageAckStatus\x12\x12\n\x0eSTATUS_SUCCESS\x10\x00\x12\x10\n\x0cSTATUS_ERROR\x10\x01\x12\x13\n\x0fSTATUS_NOTFOUND\x10\x02\"\x85\x02\n\x0eReceiptMessage\x12$\n\x05\x65ntry\x18\x01 \x03(\x0b\x32\x15.ReceiptMessage.Entry\x1a\xcc\x01\n\x05\x45ntry\x12\x12\n\nmessage_id\x18\x01 \x02(\t\x12\x33\n\x06status\x18\x02 \x02(\x0e\x32#.ReceiptMessage.Entry.ReceiptStatus\x12\x11\n\ttimestamp\x18\x03 \x01(\t\"g\n\rReceiptStatus\x12\x12\n\x0eSTATUS_SUCCESS\x10\x00\x12\x10\n\x0cSTATUS_ERROR\x10\x01\x12\x18\n\x14STATUS_USER_NOTFOUND\x10\x02\x12\x16\n\x12STATUS_TTL_EXPIRED\x10\x03\"\'\n\x13RegistrationRequest\x12\x10\n\x08username\x18\x01 \x02(\t\"\xf3\x01\n\x14RegistrationResponse\x12\x38\n\x06status\x18\x01 \x02(\x0e\x32(.RegistrationResponse.RegistrationStatus\x12\r\n\x05token\x18\x02 \x01(\t\x12\x10\n\x08sms_from\x18\x03 \x01(\t\x12\x12\n\nemail_from\x18\x04 \x01(\t\"l\n\x12RegistrationStatus\x12\x12\n\x0eSTATUS_SUCCESS\x10\x00\x12\x10\n\x0cSTATUS_ERROR\x10\x01\x12\x13\n\x0fSTATUS_CONTINUE\x10\x02\x12\x1b\n\x17STATUS_INVALID_USERNAME\x10\x03\",\n\x11ValidationRequest\x12\x17\n\x0fvalidation_code\x18\x01 \x02(\t\"\xa6\x01\n\x12ValidationResponse\x12\x34\n\x06status\x18\x01 \x02(\x0e\x32$.ValidationResponse.ValidationStatus\x12\r\n\x05token\x18\x02 \x01(\t\"K\n\x10ValidationStatus\x12\x12\n\x0eSTATUS_SUCCESS\x10\x00\x12\x10\n\x0cSTATUS_ERROR\x10\x01\x12\x11\n\rSTATUS_FAILED\x10\x02\"$\n\x11UserLookupRequest\x12\x0f\n\x07user_id\x18\x01 \x03(\t\"\x8d\x01\n\x12UserLookupResponse\x12(\n\x05\x65ntry\x18\x01 \x03(\x0b\x32\x19.UserLookupResponse.Entry\x1aM\n\x05\x45ntry\x12\x0f\n\x07user_id\x18\x01 \x02(\t\x12\x11\n\ttimestamp\x18\x02 \x01(\x04\x12\x0e\n\x06status\x18\x03 \x01(\t\x12\x10\n\x08timediff\x18\x04 \x01(\x04\"\xd1\x01\n\x12\x46ileUploadResponse\x12\x34\n\x06status\x18\x01 \x02(\x0e\x32$.FileUploadResponse.FileUploadStatus\x12\x0f\n\x07\x66ile_id\x18\x02 \x01(\t\"t\n\x10\x46ileUploadStatus\x12\x12\n\x0eSTATUS_SUCCESS\x10\x00\x12\x10\n\x0cSTATUS_ERROR\x10\x01\x12\x11\n\rSTATUS_FAILED\x10\x02\x12\x0e\n\nSTATUS_BIG\x10\x03\x12\x17\n\x13STATUS_NOTSUPPORTED\x10\x04\"D\n\x11ServerInfoRequest\x12\x17\n\x0f\x63lient_protocol\x18\x01 \x01(\r\x12\x16\n\x0e\x63lient_version\x18\x02 \x01(\t\"~\n\x12ServerInfoResponse\x12\x0f\n\x07version\x18\x01 \x02(\t\x12\x17\n\x0f\x63lient_protocol\x18\x02 \x02(\r\x12\x17\n\x0fserver_protocol\x18\x03 \x02(\r\x12\x13\n\x0b\x66ingerprint\x18\x04 \x02(\t\x12\x10\n\x08supports\x18\x05 \x03(\t\"O\n\x15UserInfoUpdateRequest\x12\x16\n\x0estatus_message\x18\x01 \x01(\t\x12\x1e\n\x16google_registration_id\x18\x02 \x01(\t\"\xa4\x01\n\x16UserInfoUpdateResponse\x12<\n\x06status\x18\x01 \x02(\x0e\x32,.UserInfoUpdateResponse.UserInfoUpdateStatus\"L\n\x14UserInfoUpdateStatus\x12\x12\n\x0eSTATUS_SUCCESS\x10\x00\x12\x10\n\x0cSTATUS_ERROR\x10\x01\x12\x0e\n\nSTATUS_BIG\x10\x02\"?\n\x1cUserPresenceSubscribeRequest\x12\x0f\n\x07user_id\x18\x01 \x02(\t\x12\x0e\n\x06\x65vents\x18\x02 \x02(\r\"\xef\x01\n\x1dUserPresenceSubscribeResponse\x12\x41\n\x06status\x18\x01 \x02(\x0e\x32\x31.UserPresenceSubscribeResponse.UserPresenceStatus\"\x8a\x01\n\x12UserPresenceStatus\x12\x12\n\x0eSTATUS_SUCCESS\x10\x00\x12\x10\n\x0cSTATUS_ERROR\x10\x01\x12\x1b\n\x17STATUS_INVALID_USERNAME\x10\x02\x12\x18\n\x14STATUS_USER_NOTFOUND\x10\x03\x12\x17\n\x13STATUS_NOTSUPPORTED\x10\x04\"\x9a\x01\n\x0cUserPresence\x12&\n\x05\x65vent\x18\x02 \x02(\x0e\x32\x17.UserPresence.UserEvent\x12\x16\n\x0estatus_message\x18\x03 \x01(\t\"J\n\tUserEvent\x12\x10\n\x0c\x45VENT_ONLINE\x10\x01\x12\x11\n\rEVENT_OFFLINE\x10\x02\x12\x18\n\x14\x45VENT_STATUS_CHANGED\x10\x03\"|\n\nServerList\x12\x11\n\ttimestamp\x18\x01 \x02(\x04\x12 \n\x05\x65ntry\x18\x02 \x03(\x0b\x32\x11.ServerList.Entry\x1a\x39\n\x05\x45ntry\x12\x0f\n\x07\x61\x64\x64ress\x18\x01 \x02(\t\x12\x0c\n\x04port\x18\x02 \x01(\r\x12\x11\n\thttp_port\x18\x03 \x01(\r\"\x19\n\x04Ping\x12\x11\n\ttimestamp\x18\x01 \x01(\x04\"\x19\n\x04Pong\x12\x11\n\ttimestamp\x18\x01 \x01(\x04\"\x17\n\x15ValidationCodeRequest\"\xa2\x01\n\x16ValidationCodeResponse\x12<\n\x06status\x18\x01 \x02(\x0e\x32,.ValidationCodeResponse.ValidationCodeStatus\x12\x0c\n\x04\x63ode\x18\x02 \x01(\t\"<\n\x14ValidationCodeStatus\x12\x12\n\x0eSTATUS_SUCCESS\x10\x00\x12\x10\n\x0cSTATUS_ERROR\x10\x01*\x85\x01\n\rUserEventMask\x12\x1a\n\x16USER_EVENT_MASK_ONLINE\x10\x01\x12\x1b\n\x17USER_EVENT_MASK_OFFLINE\x10\x02\x12\"\n\x1eUSER_EVENT_MASK_STATUS_CHANGED\x10\x04\x12\x17\n\x13USER_EVENT_MASK_ALL\x10\x07\x42 \n\x12org.kontalk.clientB\x08ProtocolH\x03')
+  serialized_pb='\n\tc2s.proto\"U\n\x13\x41uthenticateRequest\x12\r\n\x05token\x18\x01 \x02(\t\x12\x17\n\x0f\x63lient_protocol\x18\x02 \x01(\r\x12\x16\n\x0e\x63lient_version\x18\x03 \x01(\t\"%\n\x14\x41uthenticateResponse\x12\r\n\x05valid\x18\x01 \x02(\x08\"U\n\x12MessagePostRequest\x12\x11\n\trecipient\x18\x01 \x03(\t\x12\x0c\n\x04mime\x18\x02 \x01(\t\x12\r\n\x05\x66lags\x18\x03 \x03(\t\x12\x0f\n\x07\x63ontent\x18\x04 \x01(\x0c\"\xcf\x02\n\x13MessagePostResponse\x12/\n\x05\x65ntry\x18\x01 \x03(\x0b\x32 .MessagePostResponse.MessageSent\x1a\x86\x02\n\x0bMessageSent\x12\x42\n\x06status\x18\x01 \x02(\x0e\x32\x32.MessagePostResponse.MessageSent.MessageSentStatus\x12\x0f\n\x07user_id\x18\x02 \x02(\t\x12\x12\n\nmessage_id\x18\x03 \x01(\t\"\x8d\x01\n\x11MessageSentStatus\x12\x12\n\x0eSTATUS_SUCCESS\x10\x00\x12\x10\n\x0cSTATUS_ERROR\x10\x01\x12\x0f\n\x0bSTATUS_BUSY\x10\x02\x12\x18\n\x14STATUS_USER_NOTFOUND\x10\x03\x12\x0e\n\nSTATUS_BIG\x10\x04\x12\x17\n\x13STATUS_NOTSUPPORTED\x10\x05\"\xc4\x01\n\nNewMessage\x12\x12\n\nmessage_id\x18\x01 \x02(\t\x12\x11\n\ttimestamp\x18\x02 \x02(\t\x12\x0e\n\x06sender\x18\x03 \x02(\t\x12\r\n\x05group\x18\x04 \x03(\t\x12\x13\n\x0boriginal_id\x18\x05 \x01(\t\x12\x0c\n\x04mime\x18\x06 \x02(\t\x12\r\n\x05\x66lags\x18\x07 \x03(\t\x12\x0f\n\x07\x63ontent\x18\x08 \x02(\x0c\x12\x0b\n\x03url\x18\t \x01(\t\x12\x10\n\x08need_ack\x18\n \x02(\x08\x12\x0e\n\x06length\x18\x0b \x01(\x04\"\'\n\x11MessageAckRequest\x12\x12\n\nmessage_id\x18\x01 \x03(\t\"\xe7\x01\n\x12MessageAckResponse\x12(\n\x05\x65ntry\x18\x01 \x03(\x0b\x32\x19.MessageAckResponse.Entry\x1a\xa6\x01\n\x05\x45ntry\x12\x12\n\nmessage_id\x18\x01 \x02(\t\x12:\n\x06status\x18\x02 \x02(\x0e\x32*.MessageAckResponse.Entry.MessageAckStatus\"M\n\x10MessageAckStatus\x12\x12\n\x0eSTATUS_SUCCESS\x10\x00\x12\x10\n\x0cSTATUS_ERROR\x10\x01\x12\x13\n\x0fSTATUS_NOTFOUND\x10\x02\"\x85\x02\n\x0eReceiptMessage\x12$\n\x05\x65ntry\x18\x01 \x03(\x0b\x32\x15.ReceiptMessage.Entry\x1a\xcc\x01\n\x05\x45ntry\x12\x12\n\nmessage_id\x18\x01 \x02(\t\x12\x33\n\x06status\x18\x02 \x02(\x0e\x32#.ReceiptMessage.Entry.ReceiptStatus\x12\x11\n\ttimestamp\x18\x03 \x01(\t\"g\n\rReceiptStatus\x12\x12\n\x0eSTATUS_SUCCESS\x10\x00\x12\x10\n\x0cSTATUS_ERROR\x10\x01\x12\x18\n\x14STATUS_USER_NOTFOUND\x10\x02\x12\x16\n\x12STATUS_TTL_EXPIRED\x10\x03\"\'\n\x13RegistrationRequest\x12\x10\n\x08username\x18\x01 \x02(\t\"\xf3\x01\n\x14RegistrationResponse\x12\x38\n\x06status\x18\x01 \x02(\x0e\x32(.RegistrationResponse.RegistrationStatus\x12\r\n\x05token\x18\x02 \x01(\t\x12\x10\n\x08sms_from\x18\x03 \x01(\t\x12\x12\n\nemail_from\x18\x04 \x01(\t\"l\n\x12RegistrationStatus\x12\x12\n\x0eSTATUS_SUCCESS\x10\x00\x12\x10\n\x0cSTATUS_ERROR\x10\x01\x12\x13\n\x0fSTATUS_CONTINUE\x10\x02\x12\x1b\n\x17STATUS_INVALID_USERNAME\x10\x03\",\n\x11ValidationRequest\x12\x17\n\x0fvalidation_code\x18\x01 \x02(\t\"\xa6\x01\n\x12ValidationResponse\x12\x34\n\x06status\x18\x01 \x02(\x0e\x32$.ValidationResponse.ValidationStatus\x12\r\n\x05token\x18\x02 \x01(\t\"K\n\x10ValidationStatus\x12\x12\n\x0eSTATUS_SUCCESS\x10\x00\x12\x10\n\x0cSTATUS_ERROR\x10\x01\x12\x11\n\rSTATUS_FAILED\x10\x02\"$\n\x11UserLookupRequest\x12\x0f\n\x07user_id\x18\x01 \x03(\t\"\x8d\x01\n\x12UserLookupResponse\x12(\n\x05\x65ntry\x18\x01 \x03(\x0b\x32\x19.UserLookupResponse.Entry\x1aM\n\x05\x45ntry\x12\x0f\n\x07user_id\x18\x01 \x02(\t\x12\x11\n\ttimestamp\x18\x02 \x01(\x04\x12\x0e\n\x06status\x18\x03 \x01(\t\x12\x10\n\x08timediff\x18\x04 \x01(\x04\"\xd1\x01\n\x12\x46ileUploadResponse\x12\x34\n\x06status\x18\x01 \x02(\x0e\x32$.FileUploadResponse.FileUploadStatus\x12\x0f\n\x07\x66ile_id\x18\x02 \x01(\t\"t\n\x10\x46ileUploadStatus\x12\x12\n\x0eSTATUS_SUCCESS\x10\x00\x12\x10\n\x0cSTATUS_ERROR\x10\x01\x12\x11\n\rSTATUS_FAILED\x10\x02\x12\x0e\n\nSTATUS_BIG\x10\x03\x12\x17\n\x13STATUS_NOTSUPPORTED\x10\x04\"D\n\x11ServerInfoRequest\x12\x17\n\x0f\x63lient_protocol\x18\x01 \x01(\r\x12\x16\n\x0e\x63lient_version\x18\x02 \x01(\t\"~\n\x12ServerInfoResponse\x12\x0f\n\x07version\x18\x01 \x02(\t\x12\x17\n\x0f\x63lient_protocol\x18\x02 \x02(\r\x12\x17\n\x0fserver_protocol\x18\x03 \x02(\r\x12\x13\n\x0b\x66ingerprint\x18\x04 \x02(\t\x12\x10\n\x08supports\x18\x05 \x03(\t\"O\n\x15UserInfoUpdateRequest\x12\x16\n\x0estatus_message\x18\x01 \x01(\t\x12\x1e\n\x16google_registration_id\x18\x02 \x01(\t\"\xa4\x01\n\x16UserInfoUpdateResponse\x12<\n\x06status\x18\x01 \x02(\x0e\x32,.UserInfoUpdateResponse.UserInfoUpdateStatus\"L\n\x14UserInfoUpdateStatus\x12\x12\n\x0eSTATUS_SUCCESS\x10\x00\x12\x10\n\x0cSTATUS_ERROR\x10\x01\x12\x0e\n\nSTATUS_BIG\x10\x02\"?\n\x1cUserPresenceSubscribeRequest\x12\x0f\n\x07user_id\x18\x01 \x02(\t\x12\x0e\n\x06\x65vents\x18\x02 \x02(\r\"\xef\x01\n\x1dUserPresenceSubscribeResponse\x12\x41\n\x06status\x18\x01 \x02(\x0e\x32\x31.UserPresenceSubscribeResponse.UserPresenceStatus\"\x8a\x01\n\x12UserPresenceStatus\x12\x12\n\x0eSTATUS_SUCCESS\x10\x00\x12\x10\n\x0cSTATUS_ERROR\x10\x01\x12\x1b\n\x17STATUS_INVALID_USERNAME\x10\x02\x12\x18\n\x14STATUS_USER_NOTFOUND\x10\x03\x12\x17\n\x13STATUS_NOTSUPPORTED\x10\x04\"\x9a\x01\n\x0cUserPresence\x12&\n\x05\x65vent\x18\x02 \x02(\x0e\x32\x17.UserPresence.UserEvent\x12\x16\n\x0estatus_message\x18\x03 \x01(\t\"J\n\tUserEvent\x12\x10\n\x0c\x45VENT_ONLINE\x10\x01\x12\x11\n\rEVENT_OFFLINE\x10\x02\x12\x18\n\x14\x45VENT_STATUS_CHANGED\x10\x03\"|\n\nServerList\x12\x11\n\ttimestamp\x18\x01 \x02(\x04\x12 \n\x05\x65ntry\x18\x02 \x03(\x0b\x32\x11.ServerList.Entry\x1a\x39\n\x05\x45ntry\x12\x0f\n\x07\x61\x64\x64ress\x18\x01 \x02(\t\x12\x0c\n\x04port\x18\x02 \x01(\r\x12\x11\n\thttp_port\x18\x03 \x01(\r\"\x19\n\x04Ping\x12\x11\n\ttimestamp\x18\x01 \x01(\x04\"\x19\n\x04Pong\x12\x11\n\ttimestamp\x18\x01 \x01(\x04\"\x17\n\x15ValidationCodeRequest\"\xa2\x01\n\x16ValidationCodeResponse\x12<\n\x06status\x18\x01 \x02(\x0e\x32,.ValidationCodeResponse.ValidationCodeStatus\x12\x0c\n\x04\x63ode\x18\x02 \x01(\t\"<\n\x14ValidationCodeStatus\x12\x12\n\x0eSTATUS_SUCCESS\x10\x00\x12\x10\n\x0cSTATUS_ERROR\x10\x01*\x85\x01\n\rUserEventMask\x12\x1a\n\x16USER_EVENT_MASK_ONLINE\x10\x01\x12\x1b\n\x17USER_EVENT_MASK_OFFLINE\x10\x02\x12\"\n\x1eUSER_EVENT_MASK_STATUS_CHANGED\x10\x04\x12\x17\n\x13USER_EVENT_MASK_ALL\x10\x07\x42 \n\x12org.kontalk.clientB\x08ProtocolH\x03')
 
 _USEREVENTMASK = descriptor.EnumDescriptor(
   name='UserEventMask',
@@ -38,8 +38,8 @@ _USEREVENTMASK = descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=3430,
-  serialized_end=3563,
+  serialized_start=3479,
+  serialized_end=3612,
 )
 
 
@@ -82,8 +82,8 @@ _MESSAGEPOSTRESPONSE_MESSAGESENT_MESSAGESENTSTATUS = descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=372,
-  serialized_end=513,
+  serialized_start=421,
+  serialized_end=562,
 )
 
 _MESSAGEACKRESPONSE_ENTRY_MESSAGEACKSTATUS = descriptor.EnumDescriptor(
@@ -107,8 +107,8 @@ _MESSAGEACKRESPONSE_ENTRY_MESSAGEACKSTATUS = descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=910,
-  serialized_end=987,
+  serialized_start=959,
+  serialized_end=1036,
 )
 
 _RECEIPTMESSAGE_ENTRY_RECEIPTSTATUS = descriptor.EnumDescriptor(
@@ -136,8 +136,8 @@ _RECEIPTMESSAGE_ENTRY_RECEIPTSTATUS = descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=1148,
-  serialized_end=1251,
+  serialized_start=1197,
+  serialized_end=1300,
 )
 
 _REGISTRATIONRESPONSE_REGISTRATIONSTATUS = descriptor.EnumDescriptor(
@@ -165,8 +165,8 @@ _REGISTRATIONRESPONSE_REGISTRATIONSTATUS = descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=1430,
-  serialized_end=1538,
+  serialized_start=1479,
+  serialized_end=1587,
 )
 
 _VALIDATIONRESPONSE_VALIDATIONSTATUS = descriptor.EnumDescriptor(
@@ -190,8 +190,8 @@ _VALIDATIONRESPONSE_VALIDATIONSTATUS = descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=1678,
-  serialized_end=1753,
+  serialized_start=1727,
+  serialized_end=1802,
 )
 
 _FILEUPLOADRESPONSE_FILEUPLOADSTATUS = descriptor.EnumDescriptor(
@@ -223,8 +223,8 @@ _FILEUPLOADRESPONSE_FILEUPLOADSTATUS = descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=2031,
-  serialized_end=2147,
+  serialized_start=2080,
+  serialized_end=2196,
 )
 
 _USERINFOUPDATERESPONSE_USERINFOUPDATESTATUS = descriptor.EnumDescriptor(
@@ -248,8 +248,8 @@ _USERINFOUPDATERESPONSE_USERINFOUPDATESTATUS = descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=2517,
-  serialized_end=2593,
+  serialized_start=2566,
+  serialized_end=2642,
 )
 
 _USERPRESENCESUBSCRIBERESPONSE_USERPRESENCESTATUS = descriptor.EnumDescriptor(
@@ -281,8 +281,8 @@ _USERPRESENCESUBSCRIBERESPONSE_USERPRESENCESTATUS = descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=2762,
-  serialized_end=2900,
+  serialized_start=2811,
+  serialized_end=2949,
 )
 
 _USERPRESENCE_USEREVENT = descriptor.EnumDescriptor(
@@ -306,8 +306,8 @@ _USERPRESENCE_USEREVENT = descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=2983,
-  serialized_end=3057,
+  serialized_start=3032,
+  serialized_end=3106,
 )
 
 _VALIDATIONCODERESPONSE_VALIDATIONCODESTATUS = descriptor.EnumDescriptor(
@@ -327,8 +327,8 @@ _VALIDATIONCODERESPONSE_VALIDATIONCODESTATUS = descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=3367,
-  serialized_end=3427,
+  serialized_start=3416,
+  serialized_end=3476,
 )
 
 
@@ -346,6 +346,20 @@ _AUTHENTICATEREQUEST = descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
+    descriptor.FieldDescriptor(
+      name='client_protocol', full_name='AuthenticateRequest.client_protocol', index=1,
+      number=2, type=13, cpp_type=3, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    descriptor.FieldDescriptor(
+      name='client_version', full_name='AuthenticateRequest.client_version', index=2,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=unicode("", "utf-8"),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
   ],
   extensions=[
   ],
@@ -356,7 +370,7 @@ _AUTHENTICATEREQUEST = descriptor.Descriptor(
   is_extendable=False,
   extension_ranges=[],
   serialized_start=13,
-  serialized_end=49,
+  serialized_end=98,
 )
 
 
@@ -383,8 +397,8 @@ _AUTHENTICATERESPONSE = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=51,
-  serialized_end=88,
+  serialized_start=100,
+  serialized_end=137,
 )
 
 
@@ -432,8 +446,8 @@ _MESSAGEPOSTREQUEST = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=90,
-  serialized_end=175,
+  serialized_start=139,
+  serialized_end=224,
 )
 
 
@@ -475,8 +489,8 @@ _MESSAGEPOSTRESPONSE_MESSAGESENT = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=251,
-  serialized_end=513,
+  serialized_start=300,
+  serialized_end=562,
 )
 
 _MESSAGEPOSTRESPONSE = descriptor.Descriptor(
@@ -502,8 +516,8 @@ _MESSAGEPOSTRESPONSE = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=178,
-  serialized_end=513,
+  serialized_start=227,
+  serialized_end=562,
 )
 
 
@@ -600,8 +614,8 @@ _NEWMESSAGE = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=516,
-  serialized_end=712,
+  serialized_start=565,
+  serialized_end=761,
 )
 
 
@@ -628,8 +642,8 @@ _MESSAGEACKREQUEST = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=714,
-  serialized_end=753,
+  serialized_start=763,
+  serialized_end=802,
 )
 
 
@@ -664,8 +678,8 @@ _MESSAGEACKRESPONSE_ENTRY = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=821,
-  serialized_end=987,
+  serialized_start=870,
+  serialized_end=1036,
 )
 
 _MESSAGEACKRESPONSE = descriptor.Descriptor(
@@ -691,8 +705,8 @@ _MESSAGEACKRESPONSE = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=756,
-  serialized_end=987,
+  serialized_start=805,
+  serialized_end=1036,
 )
 
 
@@ -734,8 +748,8 @@ _RECEIPTMESSAGE_ENTRY = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=1047,
-  serialized_end=1251,
+  serialized_start=1096,
+  serialized_end=1300,
 )
 
 _RECEIPTMESSAGE = descriptor.Descriptor(
@@ -761,8 +775,8 @@ _RECEIPTMESSAGE = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=990,
-  serialized_end=1251,
+  serialized_start=1039,
+  serialized_end=1300,
 )
 
 
@@ -789,8 +803,8 @@ _REGISTRATIONREQUEST = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=1253,
-  serialized_end=1292,
+  serialized_start=1302,
+  serialized_end=1341,
 )
 
 
@@ -839,8 +853,8 @@ _REGISTRATIONRESPONSE = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=1295,
-  serialized_end=1538,
+  serialized_start=1344,
+  serialized_end=1587,
 )
 
 
@@ -867,8 +881,8 @@ _VALIDATIONREQUEST = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=1540,
-  serialized_end=1584,
+  serialized_start=1589,
+  serialized_end=1633,
 )
 
 
@@ -903,8 +917,8 @@ _VALIDATIONRESPONSE = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=1587,
-  serialized_end=1753,
+  serialized_start=1636,
+  serialized_end=1802,
 )
 
 
@@ -931,8 +945,8 @@ _USERLOOKUPREQUEST = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=1755,
-  serialized_end=1791,
+  serialized_start=1804,
+  serialized_end=1840,
 )
 
 
@@ -980,8 +994,8 @@ _USERLOOKUPRESPONSE_ENTRY = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=1858,
-  serialized_end=1935,
+  serialized_start=1907,
+  serialized_end=1984,
 )
 
 _USERLOOKUPRESPONSE = descriptor.Descriptor(
@@ -1007,8 +1021,8 @@ _USERLOOKUPRESPONSE = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=1794,
-  serialized_end=1935,
+  serialized_start=1843,
+  serialized_end=1984,
 )
 
 
@@ -1043,8 +1057,8 @@ _FILEUPLOADRESPONSE = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=1938,
-  serialized_end=2147,
+  serialized_start=1987,
+  serialized_end=2196,
 )
 
 
@@ -1078,8 +1092,8 @@ _SERVERINFOREQUEST = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=2149,
-  serialized_end=2217,
+  serialized_start=2198,
+  serialized_end=2266,
 )
 
 
@@ -1134,8 +1148,8 @@ _SERVERINFORESPONSE = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=2219,
-  serialized_end=2345,
+  serialized_start=2268,
+  serialized_end=2394,
 )
 
 
@@ -1169,8 +1183,8 @@ _USERINFOUPDATEREQUEST = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=2347,
-  serialized_end=2426,
+  serialized_start=2396,
+  serialized_end=2475,
 )
 
 
@@ -1198,8 +1212,8 @@ _USERINFOUPDATERESPONSE = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=2429,
-  serialized_end=2593,
+  serialized_start=2478,
+  serialized_end=2642,
 )
 
 
@@ -1233,8 +1247,8 @@ _USERPRESENCESUBSCRIBEREQUEST = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=2595,
-  serialized_end=2658,
+  serialized_start=2644,
+  serialized_end=2707,
 )
 
 
@@ -1262,8 +1276,8 @@ _USERPRESENCESUBSCRIBERESPONSE = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=2661,
-  serialized_end=2900,
+  serialized_start=2710,
+  serialized_end=2949,
 )
 
 
@@ -1298,8 +1312,8 @@ _USERPRESENCE = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=2903,
-  serialized_end=3057,
+  serialized_start=2952,
+  serialized_end=3106,
 )
 
 
@@ -1340,8 +1354,8 @@ _SERVERLIST_ENTRY = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=3126,
-  serialized_end=3183,
+  serialized_start=3175,
+  serialized_end=3232,
 )
 
 _SERVERLIST = descriptor.Descriptor(
@@ -1374,8 +1388,8 @@ _SERVERLIST = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=3059,
-  serialized_end=3183,
+  serialized_start=3108,
+  serialized_end=3232,
 )
 
 
@@ -1402,8 +1416,8 @@ _PING = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=3185,
-  serialized_end=3210,
+  serialized_start=3234,
+  serialized_end=3259,
 )
 
 
@@ -1430,8 +1444,8 @@ _PONG = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=3212,
-  serialized_end=3237,
+  serialized_start=3261,
+  serialized_end=3286,
 )
 
 
@@ -1451,8 +1465,8 @@ _VALIDATIONCODEREQUEST = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=3239,
-  serialized_end=3262,
+  serialized_start=3288,
+  serialized_end=3311,
 )
 
 
@@ -1487,8 +1501,8 @@ _VALIDATIONCODERESPONSE = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=3265,
-  serialized_end=3427,
+  serialized_start=3314,
+  serialized_end=3476,
 )
 
 _MESSAGEPOSTRESPONSE_MESSAGESENT.fields_by_name['status'].enum_type = _MESSAGEPOSTRESPONSE_MESSAGESENT_MESSAGESENTSTATUS
