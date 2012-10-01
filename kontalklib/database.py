@@ -184,6 +184,11 @@ class UsercacheDb(MessengerDb):
             (new['timestamp'] > (old['timestamp'] + self._config['broker']['usercache.validity']))
         )
 
+    def unique_users_count(self):
+        q = 'SELECT COUNT(DISTINCT substr(userid,1,40)) CNT FROM usercache'
+        rs = self.get_row(q)
+        return long(rs['CNT']) if rs else 0
+
 
 class MessagesDb(MessengerDb):
     '''Interface to the messages table.'''
