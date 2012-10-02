@@ -45,7 +45,16 @@ import cPickle, pickle, os, shutil
 import random, base64, hashlib
 import Image, StringIO, vobject
 
-import database
+from zope.interface import implements
+
+# twisted web
+from twisted.web import iweb
+from twisted.cred import credentials, checkers, error
+from twisted.python import failure
+from twisted.internet import defer
+
+import logging as log
+import database, token
 
 # pyme
 from pyme import core, callbacks
@@ -227,3 +236,63 @@ class PersistentDict(dict):
             return self.update(cPickle.load(fileobj))
         except Exception:
             pass
+
+
+class IKontalkToken(credentials.ICredentials):
+
+    def checkToken():
+        pass
+
+
+class KontalkToken(object):
+    implements(IKontalkToken)
+
+    def __init__(self, token, fingerprint, keyring):
+        self.token = token
+        self.fingerprint = fingerprint
+        self.keyring = keyring
+
+    def checkToken(self):
+        try:
+            return token.verify_user_token(self.token, self.keyring, self.fingerprint)
+        except:
+            import traceback
+            traceback.print_exc()
+            log.debug("token verification failed!")
+
+
+class AuthKontalkToken(object):
+    implements(checkers.ICredentialsChecker)
+
+    credentialInterfaces = IKontalkToken,
+
+    def _cbTokenValid(self, userid):
+        if userid:
+            return userid
+        else:
+            return failure.Failure(error.UnauthorizedLogin())
+
+    def requestAvatarId(self, credentials):
+        return defer.maybeDeferred(
+            credentials.checkToken).addCallback(
+            self._cbTokenValid)
+
+
+class AuthKontalkTokenFactory(object):
+    implements(iweb.ICredentialFactory)
+
+    scheme = 'kontalktoken'
+
+    def __init__(self, fingerprint, keyring):
+        self.fingerprint = fingerprint
+        self.keyring = keyring
+
+    def getChallenge(self, request):
+        return {}
+
+    def decode(self, response, request):
+        key, token = response.split('=', 1)
+        if key == 'auth':
+            return KontalkToken(token, self.fingerprint, self.keyring)
+
+        raise error.LoginFailed('Invalid token')
