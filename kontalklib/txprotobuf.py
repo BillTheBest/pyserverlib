@@ -83,15 +83,15 @@ class DatagramProtocol(protocol.DatagramProtocol):
 class Protocol(protocol.Protocol):
     # max size: 1 MB
     MAX_LENGTH = 1048576
-    # temporary buffer
-    _buf = ''
-    # length of future-coming data
-    _length = -1
-    # overflow length
-    _over_length = -1
 
     def __init__(self, modules):
         self._modules = modules
+        # temporary buffer
+        self._buf = ''
+        # length of future-coming data
+        self._length = -1
+        # overflow length
+        self._over_length = -1
 
     def dataReceived(self, data):
         # ignoring data
