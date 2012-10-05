@@ -238,6 +238,28 @@ class PersistentDict(dict):
             pass
 
 
+## HTTP response ##
+
+def _quick_response(request, code, text = ''):
+    request.setResponseCode(code)
+    request.setHeader('content-type', 'text/plain')
+    return text
+
+def bad_request(request):
+    return _quick_response(request, 400, 'bad request')
+
+def not_found(request):
+    return _quick_response(request, 404, 'not found')
+
+def unauthorized(request):
+    return _quick_response(request, 401, 'unauthorized')
+
+def no_content(request):
+    return _quick_response(request, 204)
+
+
+## HTTP auth ##
+
 class IKontalkToken(credentials.ICredentials):
 
     def checkToken():
