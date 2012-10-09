@@ -248,11 +248,11 @@ def _quick_response(request, code, text = ''):
 def bad_request(request):
     return _quick_response(request, 400, 'bad request')
 
-def not_found(request):
-    return _quick_response(request, 404, 'not found')
+def not_found(request, text = 'not found'):
+    return _quick_response(request, 404, text)
 
-def unauthorized(request):
-    return _quick_response(request, 401, 'unauthorized')
+def unauthorized(request, text = 'unauthorized'):
+    return _quick_response(request, 401, text)
 
 def no_content(request):
     return _quick_response(request, 204)
