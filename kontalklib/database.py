@@ -360,9 +360,12 @@ class ValidationsDb(MessengerDb):
     def __init__(self, db, config):
         MessengerDb.__init__(self, db, config)
 
-    def get_code(self, userid):
+    def get_code(self, userid, generic=False):
         '''Retrieves a validation code from a userid.'''
-        r = self.get_row('SELECT code FROM validations WHERE userid = ?', (userid, ))
+        if generic:
+            r = self.get_row('SELECT code FROM validations WHERE userid LIKE ?', (userid + '%', ))
+        else:
+            r = self.get_row('SELECT code FROM validations WHERE userid = ?', (userid, ))
         return r['code'] if r else False
 
     def get_userid(self, code):
