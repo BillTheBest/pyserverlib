@@ -115,7 +115,7 @@ def generate_preview_content(filename, mime):
 
     if mime in image_mimes:
         im = Image.open(filename)
-        im.thumbnail((256, 256), Image.ANTIALIAS)
+        im.thumbnail((128, 128), Image.ANTIALIAS)
         buf = StringIO.StringIO()
         im.save(buf, format=image_mimes[mime])
         return buf.getvalue()
